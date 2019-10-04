@@ -1,17 +1,24 @@
 
 public abstract class Problem {
 
-	String[] operators;
-	String[] initialState;
+	Object[] operators;
+	Object initialState;
 	// String[] stateSpace; This is a transition function
 	//String[] goalTest; This is a function
 	// int pathCost; This is a function
 	
-	public abstract String[] stateSpace(String[] state, char action);
+	public Problem(Object[] operators, Object initialState) {
+		this.operators = operators;
+		this.initialState = initialState;
+	}
 	
-	public abstract boolean goalTest(String[] state);
+	public abstract Object stateSpace(Object state, char action);
+	
+	public abstract boolean goalTest(Object state);
 	
 	public abstract int pathCost(Node node);
+	
+	public abstract int stepCost(Node node, char action);
 	
 	
 }
