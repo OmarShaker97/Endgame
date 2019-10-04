@@ -12,13 +12,13 @@ public abstract class Problem {
 		this.initialState = initialState;
 	}
 	
-	public abstract Object stateSpace(Object state, char action);
+	public abstract Object stateSpace(Object state, Object action);
 	
 	public abstract boolean goalTest(Object state);
 	
 	public abstract int pathCost(Node node);
 	
-	public abstract int stepCost(Node node, char action);
+	public abstract int stepCost(Node node, Object action);
 	
 	
 }
