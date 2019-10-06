@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 
 public class Node {
 	
@@ -54,5 +55,16 @@ public class Node {
 	public void setPathCost(int pathCost) {
 		this.pathCost = pathCost;
 	}
+	
+	public ArrayList<Node> getPathFromRoot() {
+		ArrayList<Node> path = new ArrayList<Node>();
+        Node current = this;
+        while (!(current.parent==null)) {
+            path.add(0, current);
+            current = current.getParent();
+        }
+        path.add(0, current);
+        return path;
+    }
 
 }

@@ -46,12 +46,12 @@ public class Main{
 				);
 		Endgame.ThanosCoordinates = endgameInfo.getThanosCoordinates();
 		Endgame.gridSize = endgameInfo.getGridSize();
-//		System.out.println(Endgame.ThanosCoordinates);
-//		System.out.println(endgameInfo.getIronManCoordinates());
-//		System.out.println(endgameInfo.getCoordinates()[0]);
-//		System.out.println(endgameInfo.getCoordinates()[1]);
-//		System.out.println(problem.stringCoordinatesToArrayListCoordinates("0,3,3,0,3,2,3,4,4,3").get(0)[1]);
-		Search(problem, strategy);
+		Node nodef = Search(problem, strategy);
+		ArrayList<Node> nodesFRomRoot = nodef.getPathFromRoot();
+		System.out.println(((EndGameState) nodef.getState()).getHp());
+		for(int i=0;i<nodesFRomRoot.size();i++) {
+			System.out.println(nodesFRomRoot.get(i).getOperator());
+		}
 		return "";
 	}
 	

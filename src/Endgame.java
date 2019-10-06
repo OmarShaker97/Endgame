@@ -20,8 +20,12 @@ public class Endgame extends Problem {
 		String warriorsCoordinatesString = endgameState.getCoordinates()[0];
 		String stonesCoordinatesString = endgameState.getCoordinates()[1];
 		int decreasedHp = damageFromAdjacentCells(ironmanCoordinatesY, ironmanCoordinatesX, warriorsCoordinatesString);
-		//System.out.println(action);
-		//System.out.println(endgameState.getHp());
+		//System.out.println(endgameState.getCoordinates()[0]+ "war -length");
+		//System.out.println(endgameState.getCoordinates()[1]+ "stones -length");
+		System.out.println(endgameState.getIronManCoordinates()+ "ironman coord");
+		System.out.println(action);
+		System.out.println(endgameState.getHp());
+		System.out.println("------------");
 		//movements
 		if(((String)action).equals("up")) {
 			boolean canMove = canMove(ironmanCoordinatesY, ironmanCoordinatesX, warriorsCoordinatesString, "up");
@@ -91,8 +95,8 @@ public class Endgame extends Problem {
 	}
 	
 	public ArrayList<int[]> stringCoordinatesToArrayListCoordinates(String pos) {
-		//System.out.println(endgame.getCoordinates()[1] +"-length: "+endgame.getCoordinates()[1].length());
-		//System.out.println(endgame.getCoordinates()[0]+"-length: "+endgame.getCoordinates()[0].length());
+		System.out.println(endgame.getCoordinates()[1] +"-length: "+endgame.getCoordinates()[1].length());
+		System.out.println(endgame.getCoordinates()[0]+"-length: "+endgame.getCoordinates()[0].length());
 		ArrayList<int[]> coordinates = new ArrayList<int[]>();
 		if(pos.length() == 0) {
 			return coordinates;
