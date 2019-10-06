@@ -1,15 +1,15 @@
+import java.util.ArrayList;
 
 public abstract class Problem {
 
 	Object[] operators;
 	Object initialState;
-	// String[] stateSpace; This is a transition function
-	//String[] goalTest; This is a function
-	// int pathCost; This is a function
+	ArrayList<Object> visitedStates;
 	
 	public Problem(Object[] operators, Object initialState) {
 		this.operators = operators;
 		this.initialState = initialState;
+		visitedStates = new ArrayList<Object>();
 	}
 	
 	public abstract Object stateSpace(Object state, Object action);
@@ -21,6 +21,8 @@ public abstract class Problem {
 	public abstract int stepCost(Node node, Object action);
 	
 	public abstract Node[] expand(Node node, Object[] operators);
+	
+	public abstract boolean isVisited(Object state);
 	
 	
 }

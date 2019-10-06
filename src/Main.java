@@ -10,15 +10,26 @@ public class Main{
 	}
 	
 	public static Node Search (Problem problem ,String strategy) {
-		
-//		if(strategy.equals("BF")) {
-//			ArrayList<Node> nodes = new ArrayList<Node>();
-//			nodes.add(new Node(problem.initialState, null, "", 0, 0));
-//			Node node = nodes.remove(0);
-//			if(problem.goalTest(node.state))
-//				return node;
-//			nodes.add(e);
-//		}
+		if(strategy.equals("BF")) {
+			boolean cont = true;
+			ArrayList<Node> nodes = new ArrayList<Node>();
+			while(cont) {
+				nodes.add(new Node(problem.initialState, null, "", 0, 0));
+				Node node = nodes.remove(0);
+				if(problem.goalTest(node.state)) {
+					return node;
+				}
+				if(!problem.isVisited(node.state)) {
+					Node[] expandedNodes = problem.expand(node, problem.operators);
+					for(int i=0;i<expandedNodes.length;i++)
+						nodes.add(expandedNodes[i]);
+					problem.visitedStates.add(node.state);
+				}
+				
+				if(nodes.size() == 0)
+					cont = false;
+			}
+		}
 		return null;
 		
 	}
@@ -35,11 +46,11 @@ public class Main{
 				);
 		Endgame.ThanosCoordinates = endgameInfo.getThanosCoordinates();
 		Endgame.gridSize = endgameInfo.getGridSize();
-		System.out.println(Endgame.ThanosCoordinates);
-		System.out.println(endgameInfo.getIronManCoordinates());
-		System.out.println(endgameInfo.getCoordinates()[0]);
-		System.out.println(endgameInfo.getCoordinates()[1]);
-		System.out.println(problem.stringCoordinatesToArrayListCoordinates("0,3,3,0,3,2,3,4,4,3").get(0)[1]);
+//		System.out.println(Endgame.ThanosCoordinates);
+//		System.out.println(endgameInfo.getIronManCoordinates());
+//		System.out.println(endgameInfo.getCoordinates()[0]);
+//		System.out.println(endgameInfo.getCoordinates()[1]);
+//		System.out.println(problem.stringCoordinatesToArrayListCoordinates("0,3,3,0,3,2,3,4,4,3").get(0)[1]);
 		Search(problem, strategy);
 		return "";
 	}
