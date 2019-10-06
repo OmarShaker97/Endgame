@@ -33,28 +33,36 @@ public class Endgame extends Problem {
 			if(canMove) {
 				returnedEndgameState= moveActionState(ironmanCoordinatesY, ironmanCoordinatesX, "up", endgameState, decreasedHp);
 			}
-			returnedEndgameState= endgameState;
+			else {
+				returnedEndgameState = endgameState;
+			}
 		}
 		else if(((String)action).equals("down")) {
 			boolean canMove = canMove(ironmanCoordinatesY, ironmanCoordinatesX, warriorsCoordinatesString, "down");
 			if(canMove) {
 				returnedEndgameState= moveActionState(ironmanCoordinatesY, ironmanCoordinatesX, "down", endgameState, decreasedHp);
 			}
-			returnedEndgameState= endgameState;
+			else {
+				returnedEndgameState = endgameState;
+			}
 		}
 		else if(((String)action).equals("left")) {
 			boolean canMove = canMove(ironmanCoordinatesY, ironmanCoordinatesX, warriorsCoordinatesString, "left");
 			if(canMove) {
 				returnedEndgameState = moveActionState(ironmanCoordinatesY, ironmanCoordinatesX, "left", endgameState, decreasedHp);
 			}
-			returnedEndgameState= endgameState;
+			else {
+				returnedEndgameState = endgameState;
+			}
 		}
 		else if(((String)action).equals("right")) {
 			boolean canMove = canMove(ironmanCoordinatesY, ironmanCoordinatesX, stonesCoordinatesString, "right");
 			if(canMove) {
 				returnedEndgameState = moveActionState(ironmanCoordinatesY, ironmanCoordinatesX, "right", endgameState, decreasedHp);
 			}
-			returnedEndgameState = endgameState;
+			else {
+				returnedEndgameState = endgameState;
+			}
 		}
 		//other actions
 		else if(((String)action).equals("collect")) {
@@ -63,11 +71,12 @@ public class Endgame extends Problem {
 		else if(((String)action).equals("snap")) {
 			returnedEndgameState = endgameState;
 		}
-		if(((String)action).equals("kill")) {	
+		else if(((String)action).equals("kill")) {	
 			returnedEndgameState = killActionState(ironmanCoordinatesY, ironmanCoordinatesX, warriorsCoordinatesString, endgameState, decreasedHp);
 		}
-		boolean canMove = canMove(ironmanCoordinatesY, ironmanCoordinatesX, warriorsCoordinatesString, "up");
+		boolean canMove = canMove(ironmanCoordinatesY, ironmanCoordinatesX, warriorsCoordinatesString, ((String)action));
 		System.out.println(canMove);
+		System.out.println(((String)action));
 		System.out.println(returnedEndgameState.getCoordinates()[0] + " war -length");
 		System.out.println(returnedEndgameState.getCoordinates()[1] + " stones -length");
 		System.out.println(returnedEndgameState.getIronManCoordinates() + " ironman coord");
@@ -236,7 +245,7 @@ public class Endgame extends Problem {
                 decreasedHp+=2;
                 warriorsCoordinates.remove(i);
             }
-            else if((ironmanCoordinatesY + 1 == warriorCoordinateX) && (ironmanCoordinatesX == warriorCoordinateX)) {
+            else if((ironmanCoordinatesX + 1 == warriorCoordinateX) && (ironmanCoordinatesX == warriorCoordinateX)) {
                 decreasedHp+=2;
                 warriorsCoordinates.remove(i);
             }
@@ -253,7 +262,6 @@ public class Endgame extends Problem {
 		}
 	public EndGameState moveActionState(int ironmanCoordinatesY, int ironmanCoordinatesX, String direction, EndGameState giveState, int decreasedHp) {
 		if(direction.equals("up")) {
-			System.out.println((ironmanCoordinatesY - 1) +","+ (ironmanCoordinatesX));
 			return new EndGameState(
 					(ironmanCoordinatesY - 1) +","+ (ironmanCoordinatesX)
 					, giveState.getCoordinates()

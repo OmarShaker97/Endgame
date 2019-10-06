@@ -28,7 +28,6 @@ public class Main{
 				
 				if(nodes.size() == 0)
 					cont = false;
-				cont = false;
 			}
 		}
 		return null;
