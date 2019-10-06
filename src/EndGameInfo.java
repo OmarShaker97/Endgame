@@ -1,50 +1,38 @@
-import java.util.ArrayList;
-
 public class EndGameInfo {
 
-	int[] ironManCoordinates;
-	int[] thanosCoordinates;
-	ArrayList<int[]> warriorsCoordinates;
-	ArrayList<int[]> stonesCoordinates; 
-
-	public EndGameInfo(int[] ironManCoordinates, int[] thanosCoordinates, ArrayList<int[]> warriorsCoordinates,
-			ArrayList<int[]> stonesCoordinates) {
+	String ironManCoordinates;
+	String thanosCoordinates;
+	String[] coordinates;
+	String gridSize;
+	
+	public EndGameInfo(String gridSize, String ironManCoordinates,String thanosCoordinates, String[] coordinates) {
 		this.ironManCoordinates = ironManCoordinates;
 		this.thanosCoordinates = thanosCoordinates;
-		this.warriorsCoordinates = warriorsCoordinates;
-		this.stonesCoordinates = stonesCoordinates;
+		this.coordinates = coordinates;
+		this.gridSize = gridSize;
 	}
-
-	public int[] getIronManCoordinates() {
-		return ironManCoordinates;
+	public String getGridSize() {
+		return gridSize;
 	}
-
-	public void setIronManCoordinates(int[] ironManCoordinates) {
-		this.ironManCoordinates = ironManCoordinates;
+	public void setGridSize(String gridSize) {
+		this.gridSize = gridSize;
 	}
-
-	public int[] getThanosCoordinates() {
+	public String getThanosCoordinates() {
 		return thanosCoordinates;
 	}
-
-	public void setThanosCoordinates(int[] thanosCoordinates) {
+	public void setThanosCoordinates(String thanosCoordinates) {
 		this.thanosCoordinates = thanosCoordinates;
 	}
-
-	public ArrayList<int[]> getWarriorsCoordinates() {
-		return warriorsCoordinates;
+	public String getIronManCoordinates() {
+		return ironManCoordinates;
 	}
-
-	public void setWarriorsCoordinates(ArrayList<int[]> warriorsCoordinates) {
-		this.warriorsCoordinates = warriorsCoordinates;
+	public void setIronManCoordinates(String ironManCoordinates) {
+		this.ironManCoordinates = ironManCoordinates;
 	}
-
-	public ArrayList<int[]> getStonesCoordinates() {
-		return stonesCoordinates;
+	public String[] getCoordinates() {
+		return coordinates;
 	}
-
-	public void setStonesCoordinates(ArrayList<int[]> stonesCoordinates) {
-		this.stonesCoordinates = stonesCoordinates;
+	public void setCoordinates(String[] coordinates) {
+		this.coordinates = coordinates;
 	}
-	
 }

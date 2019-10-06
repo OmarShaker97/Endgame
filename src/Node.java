@@ -15,4 +15,44 @@ public class Node {
 		this.pathCost = pathCost;
 	}
 
+	public Object getState() {
+		return state;
+	}
+
+	public void setState(Object state) {
+		this.state = state;
+	}
+
+	public Node getParent() {
+		return parent;
+	}
+
+	public void setParent(Node parent) {
+		this.parent = parent;
+	}
+
+	public Object getOperator() {
+		return operator;
+	}
+
+	public void setOperator(Object operator) {
+		this.operator = operator;
+	}
+
+	public int getDepth() {
+		return depth;
+	}
+
+	public void setDepth(int depth) {
+		this.depth = depth;
+	}
+
+	public int getPathCost() {
+		return pathCost;
+	}
+
+	public void setPathCost(int pathCost) {
+		this.pathCost = pathCost;
+	}
+
 }

@@ -20,5 +20,7 @@ public abstract class Problem {
 	
 	public abstract int stepCost(Node node, Object action);
 	
+	public abstract Node[] expand(Node node, Object[] operators);
+	
 	
 }

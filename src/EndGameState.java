@@ -1,29 +1,38 @@
-import java.util.ArrayList;
-
 public class EndGameState {
 	
-	int[] ironManCoordinates;
-	ArrayList<int[]> warriorsCoordinates;
-	ArrayList<int[]> stonesCoordinates; 
+	String ironManCoordinates;
+	String[] coordinates;
 	int hp;
 	
-	public EndGameState(int[] ironManCoordinates, ArrayList<int[]> warriorsCoordinates
-			, ArrayList<int[]> stonesCoordinates, int hp) {
+	public EndGameState(String ironManCoordinates, String[] coordinates, int hp) {
 	
 		this.ironManCoordinates = ironManCoordinates;
-		this.warriorsCoordinates = warriorsCoordinates;
-		this.stonesCoordinates = stonesCoordinates; 
+		this.coordinates = coordinates;
 		this.hp = hp;
 	}
-	
-//	public void setIronManCoordinates(String[][] grid) {
-//		for(int i = 0; i<grid.length; i++)
-//			for(int j = 0; j<grid[0].length; j++)
-//				if(grid[i][j].equals("I")) {
-//					this.ironManCoordinates = new int[]{i, j};
-//				}
-//	}
 
-	
+	public String getIronManCoordinates() {
+		return ironManCoordinates;
+	}
+
+	public void setIronManCoordinates(String ironManCoordinates) {
+		this.ironManCoordinates = ironManCoordinates;
+	}
+
+	public String[] getCoordinates() {
+		return coordinates;
+	}
+
+	public void setCoordinates(String[] coordinates) {
+		this.coordinates = coordinates;
+	}
+
+	public int getHp() {
+		return hp;
+	}
+
+	public void setHp(int hp) {
+		this.hp = hp;
+	}
 
 }
