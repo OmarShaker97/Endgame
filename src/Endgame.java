@@ -20,13 +20,14 @@ public class Endgame extends Problem {
 		int ironmanCoordinatesX = ironmanCoordinatesArray[1];
 		String warriorsCoordinatesString = endgameState.getCoordinates()[0];
 		String stonesCoordinatesString = endgameState.getCoordinates()[1];
-		int decreasedHp = damageFromAdjacentCells(ironmanCoordinatesY, ironmanCoordinatesX, warriorsCoordinatesString);
-//		System.out.println(endgameState.getCoordinates()[0]+ "war -length");
-//		System.out.println(endgameState.getCoordinates()[1]+ "stones -length");
-//		System.out.println(endgameState.getIronManCoordinates()+ "ironman coord");
+		///should damage after the move ?
+		int decreasedHp = 0;
+//		System.out.println(endgameState.getCoordinates()[0]+ " war -length");
+//		System.out.println(endgameState.getCoordinates()[1]+ " stones -length");
+//		System.out.println(endgameState.getIronManCoordinates()+ " ironman coord");
 //		System.out.println(action);
 //		System.out.println(endgameState.getHp());
-//		System.out.println("~~~~~~~~~~~");
+//		System.out.println("VVVVVVVVVV");
 		//movements
 		if(((String)action).equals("up")) {
 			boolean canMove = canMove(ironmanCoordinatesY, ironmanCoordinatesX, warriorsCoordinatesString, "up");
@@ -66,12 +67,12 @@ public class Endgame extends Problem {
 			returnedEndgameState = endgameState;
 		boolean canMove = canMove(ironmanCoordinatesY, ironmanCoordinatesX, warriorsCoordinatesString, ((String)action));
 //		System.out.println(canMove);
-//		System.out.println(((String)action));
 //		System.out.println(returnedEndgameState.getCoordinates()[0] + " war -length");
 //		System.out.println(returnedEndgameState.getCoordinates()[1] + " stones -length");
 //		System.out.println(returnedEndgameState.getIronManCoordinates() + " ironman coord");
 //		System.out.println(returnedEndgameState.getHp());
 //		System.out.println("------------");
+		returnedEndgameState.setHp(returnedEndgameState.getHp()-damageFromAdjacentCells(ironmanCoordinatesY, ironmanCoordinatesX, warriorsCoordinatesString));
 		return returnedEndgameState;
 	}
 
@@ -173,6 +174,21 @@ public class Endgame extends Problem {
 		int[] gridSizeArray = stringCoordinatesToArrayCoordinates(gridSize);
 		int m = gridSizeArray[0];
 		int n = gridSizeArray[1];
+		int[] thanosCoordinates = stringCoordinatesToArrayCoordinates(ThanosCoordinates);
+		int thanosCoordinatesY = thanosCoordinates[0];
+		int thanosCoordinatesX = thanosCoordinates[1];
+		if((ironmanCoordinatesY - 1 == thanosCoordinatesY) && (ironmanCoordinatesX == thanosCoordinatesX)) {
+			return false;
+        }
+        if((ironmanCoordinatesX - 1 == thanosCoordinatesX) && (ironmanCoordinatesY == thanosCoordinatesY)) {
+        	return false;
+        }
+        if((ironmanCoordinatesY + 1 == thanosCoordinatesY) && (ironmanCoordinatesX == thanosCoordinatesX)) {
+        	return false;
+        }
+        if(ironmanCoordinatesX + 1 == thanosCoordinatesX && (ironmanCoordinatesY == thanosCoordinatesY)) {
+        	return false;
+        }
 		//borders
 		if((ironmanCoordinatesY == 0) && direction.equals("up"))
 			return false;
@@ -240,11 +256,11 @@ public class Endgame extends Problem {
                 decreasedHp+=2;
                 warriorsCoordinates.remove(i);
             }
-            else if((ironmanCoordinatesX + 1 == warriorCoordinateX) && (ironmanCoordinatesX == warriorCoordinateX)) {
+            else if((ironmanCoordinatesX + 1 == warriorCoordinateX) && (ironmanCoordinatesY == warriorCoordinateY)) {
                 decreasedHp+=2;
                 warriorsCoordinates.remove(i);
             }
-            else if((ironmanCoordinatesY == warriorCoordinateY) && (ironmanCoordinatesX + 1 == warriorCoordinateX)) {
+            else if((ironmanCoordinatesY + 1 == warriorCoordinateY) && (ironmanCoordinatesX == warriorCoordinateX)) {
                 decreasedHp+=2;
                 warriorsCoordinates.remove(i);
             }
@@ -332,6 +348,7 @@ public class Endgame extends Problem {
 		String endgameStateIronmanCoordinates = endgameState.getIronManCoordinates();
 		String[] endgameStateCoordinates = endgameState.getCoordinates();
 		int endgameStateHp = endgameState.getHp();
+		//System.out.println(visitedStates.size()+"");
 		for(int i=0; i<visitedStates.size();i++) {
 			EndGameState currState = (EndGameState) visitedStates.get(i);
 			String currStateIronmanCoordinates = currState.getIronManCoordinates();
