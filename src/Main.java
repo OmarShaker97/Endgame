@@ -41,9 +41,9 @@ public class Main{
 	public static String solve(String grid, String strategy, boolean visualize) {
 		String[] operators = {"up", "down", "left", "right", "collect", "kill", "snap"};
 		EndGameInfo endgameInfo = StringtoGrid(grid);
+		String[] coordinates = grid.split(";");
 		problem = new Endgame(operators, new EndGameState(
-				endgameInfo.getIronManCoordinates(),
-				endgameInfo.getCoordinates(),
+				coordinates[1] + ";" + coordinates[4] + ";" + coordinates[3],
 				100
 				)
 				);

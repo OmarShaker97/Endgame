@@ -1,13 +1,11 @@
 public class EndGameState {
 	
-	String ironManCoordinates;
-	String[] coordinates;
+	String coordinates;
+	// String[] coordinates;
 	int hp;
 	boolean isSnapped;
 	
-	public EndGameState(String ironManCoordinates, String[] coordinates, int hp) {
-	
-		this.ironManCoordinates = ironManCoordinates;
+	public EndGameState(String coordinates, int hp) {
 		this.coordinates = coordinates;
 		this.hp = hp;
 		isSnapped = false;
@@ -21,19 +19,11 @@ public class EndGameState {
 		this.isSnapped = isSnapped;
 	}
 
-	public String getIronManCoordinates() {
-		return ironManCoordinates;
-	}
-
-	public void setIronManCoordinates(String ironManCoordinates) {
-		this.ironManCoordinates = ironManCoordinates;
-	}
-
-	public String[] getCoordinates() {
+	public String getCoordinates() {
 		return coordinates;
 	}
 
-	public void setCoordinates(String[] coordinates) {
+	public void setCoordinates(String coordinates) {
 		this.coordinates = coordinates;
 	}
 
