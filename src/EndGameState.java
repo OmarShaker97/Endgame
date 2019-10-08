@@ -3,12 +3,22 @@ public class EndGameState {
 	String ironManCoordinates;
 	String[] coordinates;
 	int hp;
+	boolean isSnapped;
 	
 	public EndGameState(String ironManCoordinates, String[] coordinates, int hp) {
 	
 		this.ironManCoordinates = ironManCoordinates;
 		this.coordinates = coordinates;
 		this.hp = hp;
+		isSnapped = false;
+	}
+
+	public boolean isSnapped() {
+		return isSnapped;
+	}
+
+	public void setSnapped(boolean isSnapped) {
+		this.isSnapped = isSnapped;
 	}
 
 	public String getIronManCoordinates() {
