@@ -10,7 +10,7 @@ public class Endgame extends Problem {
 		// TODO Auto-generated constructor stub
 	}
 	//position: [y, x]
-	
+
 	// coordinates: 0 for iron man, 1 for warriors, 2 for stones
 	@Override
 	public Object stateSpace(Object state, Object action) {
@@ -31,12 +31,12 @@ public class Endgame extends Problem {
 		//		System.out.println(action);
 		//		System.out.println(endgameState.getHp());
 
-		if(stonesCoordinatesString.split(",").length < 5) {
+		if(stonesCoordinatesString.split(",").length < 4) {
 			System.out.print(stonesCoordinatesString.split(",")[0]);
 
 		}
-		//printGrid(endgameState);
-		//		System.out.println("VVVVVVVVVV");
+		printGrid(endgameState);
+		System.out.println("VVVVVVVVVV");
 		//movements
 		if(((String)action).equals("up")) {
 			boolean canMove = canMove(ironmanCoordinatesY, ironmanCoordinatesX, warriorsCoordinatesString, stonesCoordinatesString, "up");
@@ -282,7 +282,7 @@ public class Endgame extends Problem {
 		//		for(int i = 0; i<stonesCoordinates.size(); i++) {
 		//			System.out.println(stonesCoordinates.get(i)[0]+","+stonesCoordinates.get(i)[1]+",");
 		//		}
-		
+
 		int stackedHp = 0;
 		String[] coordinates = giveState.getCoordinates().split(";");
 		for(int i=0; i< stonesCoordinates.size(); i++) {
@@ -303,7 +303,6 @@ public class Endgame extends Problem {
 	public EndGameState killActionState(int ironmanCoordinatesY, int ironmanCoordinatesX, String warriorsCoordinatesInput, EndGameState giveState) {
 		ArrayList<int[]> warriorsCoordinates = stringCoordinatesToArrayListCoordinates(warriorsCoordinatesInput);
 		String[] coordinates = giveState.getCoordinates().split(";");
-		String stonesCoordinates = coordinates[2];
 		int stackedHp = 0;
 		for(int i=0; i< warriorsCoordinates.size(); i++) {
 			int[] warriorCoordinate = warriorsCoordinates.get(i);
@@ -328,7 +327,7 @@ public class Endgame extends Problem {
 		}
 		return new EndGameState(
 				coordinates[0] + ";" + arrayListCoordinatesToStringCoordinates(warriorsCoordinates) + ";" + coordinates[2]
-				,giveState.getHp() - stackedHp
+						,giveState.getHp() - stackedHp
 				);
 	}
 	public EndGameState moveActionState(int ironmanCoordinatesY, int ironmanCoordinatesX, String direction, EndGameState giveState) {
