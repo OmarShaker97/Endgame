@@ -14,7 +14,7 @@ public class Main{
 			boolean cont = true;
 			ArrayList<Node> nodes = new ArrayList<Node>();
 			nodes.add(new Node(problem.getInitialState(), null, "", 0, 0));
-			while(true) {
+			while(cont) {
 				//System.out.println(nodes.size());
 				Node node = nodes.remove(0);
 					if(problem.goalTest(node.getState())) {
@@ -28,10 +28,10 @@ public class Main{
 								nodes.add(expandedNodes[i]);
 							}
 						}	
-						problem.putinVisitedStates(node.state);
+						problem.putinVisitedStates(node.getState());
 				}
 				if(nodes.size() == 0) {
-					System.out.println("hi");
+					System.out.println("out of length");
 					cont = false;
 				}
 					
@@ -55,7 +55,7 @@ public class Main{
 		Endgame.gridSize = endgameInfo.getGridSize();
 		Node nodef = Search(problem, strategy);
 		ArrayList<Node> nodesFRomRoot = nodef.getPathFromRoot();
-		//System.out.println(((EndGameState) nodef.getState()).getHp());
+		System.out.println(nodef.getPathCost());
 		for(int i=0;i<nodesFRomRoot.size();i++) {
 			System.out.println(nodesFRomRoot.get(i).getOperator());
 		}
