@@ -6,12 +6,12 @@ public class Main{
 	static Endgame problem;
 
 	public static void main(String[] args) {
-		long startTime = System.nanoTime();
+		long startTime = System.currentTimeMillis();
 		String gridString = "5,5;1,2;3,1;0,2,1,1,2,1,2,2,4,0,4,1;0,3,3,0,3,2,3,4,4,3";
 		solve(gridString, "DF", false);
-		long endTime   = System.nanoTime();
+		long endTime = System.currentTimeMillis();
 		long totalTime = endTime - startTime;
-		System.out.println(totalTime);
+		System.out.println(totalTime + "milliseconds");
 	}
 
 	public static Node Search (Problem problem ,String strategy) {
@@ -43,7 +43,7 @@ public class Main{
 				//cont = false;
 			}
 		}
-		
+
 		if(strategy.equals("DF")) {
 			boolean cont = true;
 			ArrayList<Node> nodes = new ArrayList<Node>();

@@ -38,8 +38,8 @@ public class Endgame extends Problem {
 		//		System.out.println("warriors:"+coordinatesToPrint[1]);
 		//		System.out.println("stones:"+coordinatesToPrint[2]);
 		//		System.out.println(action);
-		printGrid(endgameState);
-		System.out.println("VVVVVVVVVV");
+		//printGrid(endgameState);
+		//System.out.println("VVVVVVVVVV");
 		//movements
 		if(((String)action).equals("up")) {
 			boolean canMove = canMove(ironmanCoordinatesY, ironmanCoordinatesX, warriorsCoordinatesString, stonesCoordinatesString, "up");
