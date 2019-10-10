@@ -1,12 +1,17 @@
 import java.util.ArrayList;
+import java.util.Stack;
 
 public class Main{
 
 	static Endgame problem;
 
 	public static void main(String[] args) {
+		long startTime = System.nanoTime();
 		String gridString = "5,5;1,2;3,1;0,2,1,1,2,1,2,2,4,0,4,1;0,3,3,0,3,2,3,4,4,3";
-		solve(gridString, "BF", false);
+		solve(gridString, "DF", false);
+		long endTime   = System.nanoTime();
+		long totalTime = endTime - startTime;
+		System.out.println(totalTime);
 	}
 
 	public static Node Search (Problem problem ,String strategy) {
@@ -17,24 +22,53 @@ public class Main{
 			while(cont) {
 				//System.out.println(nodes.size());
 				Node node = nodes.remove(0);
-					if(problem.goalTest(node.getState())) {
-						return node;
-					}
-					if(!problem.isVisited(node.getState()) && node.getPathCost()<100) {
-						Node[] expandedNodes = problem.expand(node, problem.getOperators());
-						for(int i=0;i<expandedNodes.length;i++) {
-							//System.out.println("Node"+i+":"+expandedNodes[i].toString());
-							if(expandedNodes[i].getState() != null) {
-								nodes.add(expandedNodes[i]);
-							}
-						}	
-						problem.putinVisitedStates(node.getState());
+				if(problem.goalTest(node.getState())) {
+					return node;
+				}
+				if(!problem.isVisited(node.getState()) && node.getPathCost()<100) {
+					Node[] expandedNodes = problem.expand(node, problem.getOperators());
+					for(int i=0;i<expandedNodes.length;i++) {
+						//System.out.println("Node"+i+":"+expandedNodes[i].toString());
+						if(expandedNodes[i].getState() != null) {
+							nodes.add(expandedNodes[i]);
+						}
+					}	
+					problem.putinVisitedStates(node.getState());
 				}
 				if(nodes.size() == 0) {
 					System.out.println("out of length");
 					cont = false;
 				}
-					
+
+				//cont = false;
+			}
+		}
+		
+		if(strategy.equals("DF")) {
+			boolean cont = true;
+			ArrayList<Node> nodes = new ArrayList<Node>();
+			nodes.add(new Node(problem.getInitialState(), null, "", 0, 0));
+			while(cont) {
+				//System.out.println(nodes.size());
+				Node node = nodes.remove(0);
+				if(problem.goalTest(node.getState())) {
+					return node;
+				}
+				if(!problem.isVisited(node.getState()) && node.getPathCost()<100) {
+					Node[] expandedNodes = problem.expand(node, problem.getOperators());
+					for(int i=0;i<expandedNodes.length;i++) {
+						//System.out.println("Node"+i+":"+expandedNodes[i].toString());
+						if(expandedNodes[i].getState() != null) {
+							nodes.add(0, expandedNodes[i]);
+						}
+					}	
+					problem.putinVisitedStates(node.getState());
+				}
+				if(nodes.size() == 0) {
+					System.out.println("out of length");
+					cont = false;
+				}
+
 				//cont = false;
 			}
 		}
@@ -55,9 +89,9 @@ public class Main{
 		Endgame.gridSize = endgameInfo.getGridSize();
 		Node nodef = Search(problem, strategy);
 		ArrayList<Node> nodesFRomRoot = nodef.getPathFromRoot();
-		System.out.println(nodef.getPathCost());
+		System.out.print(nodef.getPathCost());
 		for(int i=0;i<nodesFRomRoot.size();i++) {
-			System.out.println(nodesFRomRoot.get(i).getOperator());
+			System.out.print(nodesFRomRoot.get(i).getOperator() + ",");
 		}
 		return "";
 	}

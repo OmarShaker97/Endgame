@@ -1,13 +1,13 @@
 import java.util.ArrayList;
 
 public class Node {
-	
+
 	Object state;
 	Node parent;
 	Object operator;
 	int depth;
 	int pathCost;
-	
+
 	public Node(Object state, Node parent, Object operator, int depth, int pathCost) {
 		this.state = state;
 		this.parent = parent;
@@ -16,23 +16,23 @@ public class Node {
 		this.pathCost = pathCost;
 		//setPathCost(setpCost);
 	}
-	
+
 	public String toString()
 	{
 		if(getState()!=null)
-	      return "state: "+((EndGameState)getState()).getCoordinates()+" operator:"+operator+" depth:"+depth+" pathCost:"+pathCost;
+			return "state: "+((EndGameState)getState()).getCoordinates()+" operator:"+operator+" depth:"+depth+" pathCost:"+pathCost;
 		else {
 			return "state: "+null+" operator:"+operator+" depth:"+depth+" pathCost:"+pathCost;
 		}
 	}
-	
-//	public Node(Object state, Node parent, Object operator, int depth, int setpCost) {
-//		this.state = state;
-//		this.parent = parent;
-//		this.operator = operator;
-//		this.depth = depth;
-//		setPathCost(setpCost);
-//	}
+
+	//	public Node(Object state, Node parent, Object operator, int depth, int setpCost) {
+	//		this.state = state;
+	//		this.parent = parent;
+	//		this.operator = operator;
+	//		this.depth = depth;
+	//		setPathCost(setpCost);
+	//	}
 
 	public Object getState() {
 		return state;
@@ -71,19 +71,19 @@ public class Node {
 	}
 
 	public void setPathCost(int pathCost) {
-        this.pathCost = pathCost;
+		this.pathCost = pathCost;
 	}
-	
+
 	public ArrayList<Node> getPathFromRoot() {
 		ArrayList<Node> path = new ArrayList<Node>();
-        Node current = this;
-        while (!(current.parent==null)) {
-            path.add(0, current);
-            current = current.getParent();
-        }
-        path.add(0, current);
-        return path;
-    }
-	
+		Node current = this;
+		while (!(current.parent==null)) {
+			path.add(0, current);
+			current = current.getParent();
+		}
+		path.add(0, current);
+		return path;
+	}
+
 
 }
