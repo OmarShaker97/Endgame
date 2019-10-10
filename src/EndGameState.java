@@ -2,22 +2,20 @@ public class EndGameState {
 	
 	String coordinates;
 	// String[] coordinates;
-	int hp;
-	boolean isSnapped;
+	//boolean isSnapped;
 	
-	public EndGameState(String coordinates, int hp) {
+	public EndGameState(String coordinates) {
 		this.coordinates = coordinates;
-		this.hp = hp;
-		isSnapped = false;
+		//isSnapped = false;
 	}
 
-	public boolean isSnapped() {
-		return isSnapped;
-	}
-
-	public void setSnapped(boolean isSnapped) {
-		this.isSnapped = isSnapped;
-	}
+//	public boolean isSnapped() {
+//		return isSnapped;
+//	}
+//
+//	public void setSnapped(boolean isSnapped) {
+//		this.isSnapped = isSnapped;
+//	}
 
 	public String getCoordinates() {
 		return coordinates;
@@ -26,13 +24,13 @@ public class EndGameState {
 	public void setCoordinates(String coordinates) {
 		this.coordinates = coordinates;
 	}
-
-	public int getHp() {
-		return hp;
-	}
-
-	public void setHp(int hp) {
-		this.hp = hp;
+	
+	public boolean isEqaul(EndGameState stateTobeCompared) {
+		if(this.coordinates == stateTobeCompared.coordinates) {
+			return true;
+		}
+		return false;
+		
 	}
 
 }

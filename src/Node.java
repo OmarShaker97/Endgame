@@ -14,7 +14,25 @@ public class Node {
 		this.operator = operator;
 		this.depth = depth;
 		this.pathCost = pathCost;
+		//setPathCost(setpCost);
 	}
+	
+	public String toString()
+	{
+		if(getState()!=null)
+	      return "state: "+((EndGameState)getState()).getCoordinates()+" operator:"+operator+" depth:"+depth+" pathCost:"+pathCost;
+		else {
+			return "state: "+null+" operator:"+operator+" depth:"+depth+" pathCost:"+pathCost;
+		}
+	}
+	
+//	public Node(Object state, Node parent, Object operator, int depth, int setpCost) {
+//		this.state = state;
+//		this.parent = parent;
+//		this.operator = operator;
+//		this.depth = depth;
+//		setPathCost(setpCost);
+//	}
 
 	public Object getState() {
 		return state;
@@ -53,7 +71,7 @@ public class Node {
 	}
 
 	public void setPathCost(int pathCost) {
-		this.pathCost = pathCost;
+        this.pathCost = pathCost;
 	}
 	
 	public ArrayList<Node> getPathFromRoot() {
@@ -66,5 +84,6 @@ public class Node {
         path.add(0, current);
         return path;
     }
+	
 
 }

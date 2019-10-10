@@ -13,23 +13,28 @@ public class Main{
 		if(strategy.equals("BF")) {
 			boolean cont = true;
 			ArrayList<Node> nodes = new ArrayList<Node>();
-			nodes.add(new Node(problem.initialState, null, "", 0, 0));
-			while(cont) {
+			nodes.add(new Node(problem.getInitialState(), null, "", 0, 0));
+			while(true) {
+				//System.out.println(nodes.size());
 				Node node = nodes.remove(0);
-				if(node.state != null) {
-					if(problem.goalTest(node.state)) {
+					if(problem.goalTest(node.getState())) {
 						return node;
 					}
-
-					if(!problem.isVisited(node.state)) {
-						Node[] expandedNodes = problem.expand(node, problem.operators);
-						for(int i=0;i<expandedNodes.length;i++)
-							nodes.add(expandedNodes[i]);
-						problem.visitedStates.add(node.state);
-					}
+					if(!problem.isVisited(node.getState()) && node.getPathCost()<100) {
+						Node[] expandedNodes = problem.expand(node, problem.getOperators());
+						for(int i=0;i<expandedNodes.length;i++) {
+							//System.out.println("Node"+i+":"+expandedNodes[i].toString());
+							if(expandedNodes[i].getState() != null) {
+								nodes.add(expandedNodes[i]);
+							}
+						}	
+						problem.putinVisitedStates(node.state);
 				}
-				if(nodes.size() == 0)
+				if(nodes.size() == 0) {
+					System.out.println("hi");
 					cont = false;
+				}
+					
 				//cont = false;
 			}
 		}
@@ -43,15 +48,14 @@ public class Main{
 		EndGameInfo endgameInfo = StringtoGrid(grid);
 		String[] coordinates = grid.split(";");
 		problem = new Endgame(operators, new EndGameState(
-				coordinates[1] + ";" + coordinates[4] + ";" + coordinates[3],
-				100
+				coordinates[1] + ";" + coordinates[4] + ";" + coordinates[3]
 				)
 				);
 		Endgame.ThanosCoordinates = endgameInfo.getThanosCoordinates();
 		Endgame.gridSize = endgameInfo.getGridSize();
 		Node nodef = Search(problem, strategy);
 		ArrayList<Node> nodesFRomRoot = nodef.getPathFromRoot();
-		System.out.println(((EndGameState) nodef.getState()).getHp());
+		//System.out.println(((EndGameState) nodef.getState()).getHp());
 		for(int i=0;i<nodesFRomRoot.size();i++) {
 			System.out.println(nodesFRomRoot.get(i).getOperator());
 		}

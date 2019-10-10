@@ -1,26 +1,50 @@
-import java.util.ArrayList;
 
+import java.util.HashSet;
 public abstract class Problem {
 
 	Object[] operators;
 	Object initialState;
-	ArrayList<Object> visitedStates;
+	HashSet<String> visitedStates;
 	
 	public Problem(Object[] operators, Object initialState) {
 		this.operators = operators;
 		this.initialState = initialState;
-		visitedStates = new ArrayList<Object>();
+		visitedStates = new HashSet<>();
 	}
 	
-	public abstract Object stateSpace(Object state, Object action);
+	public abstract Object transitionFunction(Node node, Object action);
 	
 	public abstract boolean goalTest(Object state);
 	
-	public abstract int pathCost(Node node);
-	
-	public abstract int stepCost(Node node, Object action);
+	public abstract void calculatePathCost(Node node, int stepCost);
 	
 	public abstract Node[] expand(Node node, Object[] operators);
+	
+	public Object[] getOperators() {
+		return operators;
+	}
+
+	public void setOperators(Object[] operators) {
+		this.operators = operators;
+	}
+
+	public Object getInitialState() {
+		return initialState;
+	}
+
+	public void setInitialState(Object initialState) {
+		this.initialState = initialState;
+	}
+
+	public HashSet<String> getVisitedStates() {
+		return visitedStates;
+	}
+
+	public void setVisitedStates(HashSet<String> visitedStates) {
+		this.visitedStates = visitedStates;
+	}
+
+	public abstract void putinVisitedStates(Object state);
 	
 	public abstract boolean isVisited(Object state);
 	
