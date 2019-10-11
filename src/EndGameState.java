@@ -1,4 +1,4 @@
-public class EndGameState {
+public class EndGameState  {
 
 	String coordinates;
 	// String[] coordinates;

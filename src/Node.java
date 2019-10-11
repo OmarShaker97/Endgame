@@ -1,6 +1,6 @@
 import java.util.ArrayList;
 
-public class Node {
+public class Node  {
 
 	Object state;
 	Node parent;
