@@ -96,13 +96,16 @@ public class Endgame extends Problem {
 	}
 
 	@Override
-	public boolean goalTest(Object state) {	
-		EndGameState endGameState = (EndGameState) state;
+	public boolean goalTest(Object node) {	
+		EndGameState endGameState = (EndGameState) ((Node) node).getState();
 		String[] coordinates = endGameState.getCoordinates().split(";");
-		if(coordinates.length == 3)
-			return coordinates[2].length() == 0 && coordinates[0].equals(ThanosCoordinates);
-		else
-			return coordinates.length == 2 && coordinates[0].equals(ThanosCoordinates);
+		if(((Node) node).getOperator().equals("snap")) {
+			if(coordinates.length == 3)
+				return coordinates[2].length() == 0 && coordinates[0].equals(ThanosCoordinates);
+			else
+				return coordinates.length == 2 && coordinates[0].equals(ThanosCoordinates);}
+
+		return false;
 	}
 
 	public Node[] expand(Node node, Object[] operators) {
@@ -368,7 +371,8 @@ public class Endgame extends Problem {
 		return stringOutput.substring(0, stringOutput.length() - 1);
 	}
 
-	public void printGrid(EndGameState state) {
+	public void printGrid(Node node) {
+		EndGameState state = (EndGameState) node.getState();
 		String[] coordinates = state.getCoordinates().split(";");
 		String ironmanCoods = coordinates[0];
 		String stonesCords;
@@ -388,7 +392,7 @@ public class Endgame extends Problem {
 		ArrayList<int[]> stonesCoordinatesArray = stringCoordinatesToArrayListCoordinates(stonesCords);
 		int[] gridSizeArray = stringCoordinatesToArrayCoordinates(gridSize);
 		int[] thanosCoordinates = stringCoordinatesToArrayCoordinates(ThanosCoordinates);
-		System.out.print("g"+" ");
+		System.out.print(""+"  ");
 
 		for(int i = 0; i<gridSizeArray[0]; i++)
 			System.out.print(i + " ");

@@ -1,7 +1,5 @@
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.PriorityQueue;
-import java.util.Stack;
 
 public class Main{
 
@@ -10,11 +8,10 @@ public class Main{
 	public static void main(String[] args) {
 		long startTime = System.currentTimeMillis();
 		String gridString = "5,5;1,2;3,1;0,2,1,1,2,1,2,2,4,0,4,1;0,3,3,0,3,2,3,4,4,3";
-		solve(gridString, "UCS", false);
+		solve(gridString, "BF", true);
 		long endTime = System.currentTimeMillis();
 		long totalTime = endTime - startTime;
-		System.out.println("\n----------------");
-		System.out.println(totalTime + " milliseconds");
+		System.out.println("\n" + totalTime + " milliseconds");
 	}
 
 	public static Node Search (Problem problem ,String strategy) {
@@ -28,11 +25,11 @@ public class Main{
 		else if(strategy.equals("DF")) {
 			node = DFS(problem);
 		}
-		
+
 		else if(strategy.equals("ID")) {
 			node = ID(problem);
 		}
-		
+
 		else if(strategy.equals("UCS")) {
 			node = UCS(problem);
 		}
@@ -49,9 +46,11 @@ public class Main{
 		while(cont) {
 			//System.out.println(nodes.size());
 			Node node = nodes.remove(0);
-			if(problem.goalTest(node.getState())) {
+
+			if(problem.goalTest(node)) {
 				return node;
 			}
+
 			if(!problem.isVisited(node.getState()) && node.getPathCost()<100) {
 				Node[] expandedNodes = problem.expand(node, problem.getOperators());
 				for(int i=0;i<expandedNodes.length;i++) {
@@ -62,6 +61,9 @@ public class Main{
 				}	
 				problem.putinVisitedStates(node.getState());
 			}
+
+
+
 			if(nodes.size() == 0) {
 				System.out.println("out of length");
 				cont = false;
@@ -73,7 +75,7 @@ public class Main{
 		return null;
 
 	}
-	
+
 	public static Node UCS(Problem problem) {
 		boolean cont = true;
 		ArrayList<Node> nodes = new ArrayList<Node>();
@@ -81,7 +83,7 @@ public class Main{
 		while(cont) {
 			//System.out.println(nodes.size());
 			Node node = nodes.remove(0);
-			if(problem.goalTest(node.getState())) {
+			if(problem.goalTest(node)) {
 				return node;
 			}
 			if(!problem.isVisited(node.getState()) && node.getPathCost()<100) {
@@ -113,7 +115,7 @@ public class Main{
 		while(cont) {
 			//System.out.println(nodes.size());
 			Node node = nodes.remove(0);
-			if(problem.goalTest(node.getState())) {
+			if(problem.goalTest(node)) {
 				return node;
 			}
 			if(!problem.isVisited(node.getState()) && node.getPathCost()<100) {
@@ -137,7 +139,7 @@ public class Main{
 		return null;
 
 	}
-	
+
 	public static Node ID(Problem problem) {
 		boolean cont = true;
 		ArrayList<Node> nodes = new ArrayList<Node>();
@@ -145,11 +147,11 @@ public class Main{
 		int depthLimit = 0;
 		while(cont) {
 			Node node = nodes.remove(0);
-			
-			if(problem.goalTest(node.getState())) {
+
+			if(problem.goalTest(node)) {
 				return node;
 			}
-			
+
 			if(!problem.isVisited(node.getState()) && node.getPathCost()<100) {
 				Node[] expandedNodes = problem.expand(node, problem.getOperators());
 				for(int i=0;i<expandedNodes.length;i++) {
@@ -159,15 +161,15 @@ public class Main{
 				}	
 				problem.putinVisitedStates(node.getState());
 			}
-			
-//			if(depthLimit > node.getDepth()) {
-//				for(int i = 0; i<nodes.size();i++)
-//					nodes.remove(i);
-//				problem.setVisitedStates(new HashSet<String>());
-//				nodes.add(new Node(problem.getInitialState(), null, "", 0, 0));
-//				depthLimit+=1;
-//			}
-			
+
+			//			if(depthLimit > node.getDepth()) {
+			//				for(int i = 0; i<nodes.size();i++)
+			//					nodes.remove(i);
+			//				problem.setVisitedStates(new HashSet<String>());
+			//				nodes.add(new Node(problem.getInitialState(), null, "", 0, 0));
+			//				depthLimit+=1;
+			//			}
+
 			if(nodes.size() == 0) {
 				//System.out.println("out of length");
 				for(int i = 0; i<nodes.size();i++)
@@ -184,14 +186,15 @@ public class Main{
 		return null;
 
 	}
-	
-	
+
+
 
 
 	public static String solve(String grid, String strategy, boolean visualize) {
 		String[] operators = {"up", "down", "left", "right", "collect", "kill", "snap"};
 		EndGameInfo endgameInfo = StringtoGrid(grid);
 		String[] coordinates = grid.split(";");
+		String outputString = "";
 		problem = new Endgame(operators, new EndGameState(
 				coordinates[1] + ";" + coordinates[4] + ";" + coordinates[3]
 				)
@@ -200,12 +203,34 @@ public class Main{
 		Endgame.gridSize = endgameInfo.getGridSize();
 		Node nodef = Search(problem, strategy);
 		ArrayList<Node> nodesFRomRoot = nodef.getPathFromRoot();
-		System.out.println(nodef.getPathCost());
-		System.out.print(nodef.getDepth());
+
 		for(int i=0;i<nodesFRomRoot.size();i++) {
-			System.out.print(nodesFRomRoot.get(i).getOperator() + ",");
+			outputString += nodesFRomRoot.get(i).getOperator() + ",";
 		}
-		return "";
+
+		outputString = outputString.substring(1, outputString.length() - 1);
+		outputString+= ";" + nodef.getPathCost();
+		outputString+= ";" + nodef.getDepth();
+		//System.out.println(nodef.getPathCost());
+		//System.out.print(nodef.getDepth());
+
+
+		System.out.println(outputString);
+		
+		if(visualize) {
+			visualize(visualize, nodesFRomRoot);
+		}
+		
+		return outputString;
+	}
+	
+	public static void visualize(boolean visualize, ArrayList<Node> nodesFRomRoot) {
+		if(visualize) {
+			for(int i=0;i<nodesFRomRoot.size();i++) {
+				problem.printGrid(nodesFRomRoot.get(i));
+				System.out.println("----------------");
+			}
+		}
 	}
 
 	public static EndGameInfo StringtoGrid(String grid) {
@@ -251,4 +276,6 @@ public class Main{
 
 		return new EndGameInfo(inputString[0], inputString[1], inputString[2], new String[] {inputString[4], inputString[3]});
 	}
+	
+	
 }
