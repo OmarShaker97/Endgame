@@ -1,4 +1,5 @@
 
+import java.util.ArrayList;
 import java.util.HashSet;
 public abstract class Problem {
 
@@ -18,7 +19,7 @@ public abstract class Problem {
 
 	public abstract void calculatePathCost(Node node, int stepCost);
 
-	public abstract Node[] expand(Node node, Object[] operators);
+	public abstract ArrayList<Node> expand(Node node, Object[] operators);
 
 	public Object[] getOperators() {
 		return operators;

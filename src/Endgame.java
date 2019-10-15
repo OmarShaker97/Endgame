@@ -32,7 +32,7 @@ public class Endgame extends Problem {
 
 		stepCost = 0;
 		damageFromAdjacentCells(ironmanCoordinatesY, ironmanCoordinatesX, warriorsCoordinatesString);
-		String[] coordinatesToPrint = endgameState.getCoordinates().split(";");
+		//String[] coordinatesToPrint = endgameState.getCoordinates().split(";");
 		//		System.out.println(node.getPathCost());
 		//		System.out.println("ironman coord:"+coordinatesToPrint[0]);
 		//		System.out.println("warriors:"+coordinatesToPrint[1]);
@@ -75,25 +75,12 @@ public class Endgame extends Problem {
 		else if(((String)action).equals("kill")) {	
 			returnedEndgameState = killActionState(ironmanCoordinatesY, ironmanCoordinatesX, warriorsCoordinatesString,  endgameState);
 		}
-		//System.out.println(node.getPathCost());
-		if(returnedEndgameState!=null) {
-			String[] coordinatesToPrint1 = returnedEndgameState.getCoordinates().split(";");
-			//			System.out.println("ironman coord:"+coordinatesToPrint1[0]);
-			//			System.out.println("warriors:"+coordinatesToPrint1[1]);
-			//			System.out.println("stones:"+coordinatesToPrint1[2]);
-			// printGrid(returnedEndgameState);
-
-		}
-		else {
-			//System.out.println("null state");
-		}
-		//returnedEndgameState.setHp(returnedEndgameState.getHp()-damageFromAdjacentCells(ironmanCoordinatesY, ironmanCoordinatesX, warriorsCoordinatesString));
 		Node returnedNode = new Node(returnedEndgameState, node, action, node.getDepth()+1,0 );
 		calculatePathCost(returnedNode, stepCost);
-		//		System.out.println(returnedNode.getPathCost());
-		//		System.out.println("------------");
+		if(returnedEndgameState == null || returnedNode.getPathCost() > 100 )
+			return null;
 		return returnedNode;
-	}
+	}	
 
 	@Override
 	public boolean goalTest(Object node) {	
@@ -106,14 +93,6 @@ public class Endgame extends Problem {
 				return coordinates.length == 2 && coordinates[0].equals(ThanosCoordinates);}
 
 		return false;
-	}
-
-	public Node[] expand(Node node, Object[] operators) {
-		Node[] nodes = new Node[operators.length];
-		for(int i=0; i<operators.length;i++) {
-			nodes[i] = transitionFunction(node, operators[i]);
-		}
-		return nodes;
 	}
 
 	public ArrayList<int[]> stringCoordinatesToArrayListCoordinates(String pos) {
@@ -449,12 +428,26 @@ public class Endgame extends Problem {
 
 	@Override
 	public void calculatePathCost(Node node, int stepCost) {
-		node.setPathCost(node.parent.getPathCost()+stepCost);
+		node.setPathCost(node.getParent().getPathCost() + stepCost);
 	}
 
 	@Override
 	public void putinVisitedStates(Object state) {
 		EndGameState endgameState = (EndGameState) state;
 		visitedStates.add(endgameState.getCoordinates());
+	}
+	
+	public ArrayList<Node> expand(Node node, Object[] operators) {
+		ArrayList<Node> nodes = new ArrayList<Node>();
+		//Node[] nodes = new Node[operators.length];
+		for(int i=0; i<operators.length;i++) {
+			Node returnedNode = transitionFunction(node, operators[i]);
+			if(returnedNode != null) {
+				//System.out.println(returnedNode.toString());
+				if(!isVisited(returnedNode.getState()))
+					nodes.add(returnedNode);
+			}
+		}
+		return nodes;
 	}
 }
