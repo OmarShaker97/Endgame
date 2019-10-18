@@ -1,16 +1,15 @@
 import java.util.ArrayList;
 
 public class Endgame extends Problem {
-	static String ThanosCoordinates;
-	static String gridSize;
-	int stepCost;
+	public static String ThanosCoordinates;
+	public static String gridSize;
+	private int stepCost;
 	//
 	public Endgame(Object[] operators, Object initialState) {
 		super(operators, initialState);
 		stepCost = 0;
 	}
 	//position: [y, x]
-
 	// coordinates: 0 for iron man, 1 for warriors, 2 for stones
 	@Override
 	public Node transitionFunction(Node node, Object action) {
@@ -21,6 +20,7 @@ public class Endgame extends Problem {
 		int ironmanCoordinatesY = ironmanCoordinatesArray[0];
 		int ironmanCoordinatesX = ironmanCoordinatesArray[1];
 		String warriorsCoordinatesString;
+		String actionString = (String)action;
 		try {
 			warriorsCoordinatesString = coordinates[1];}
 		catch(Exception E){
@@ -29,7 +29,7 @@ public class Endgame extends Problem {
 		String stonesCoordinatesString = "";
 		if(coordinates.length == 3)
 			stonesCoordinatesString = coordinates[2];
-
+		
 		stepCost = 0;
 		damageFromAdjacentCells(ironmanCoordinatesY, ironmanCoordinatesX, warriorsCoordinatesString);
 		String[] coordinatesToPrint = endgameState.getCoordinates().split(";");
@@ -41,28 +41,10 @@ public class Endgame extends Problem {
 		//printGrid(endgameState);
 		//System.out.println("VVVVVVVVVV");
 		//movements
-		if(((String)action).equals("up")) {
-			boolean canMove = canMove(ironmanCoordinatesY, ironmanCoordinatesX, warriorsCoordinatesString, stonesCoordinatesString, "up");
+		if(isMove(actionString)) {
+			boolean canMove = canMove(ironmanCoordinatesY, ironmanCoordinatesX, warriorsCoordinatesString, stonesCoordinatesString, actionString);
 			if(canMove) {
-				returnedEndgameState = moveActionState(ironmanCoordinatesY, ironmanCoordinatesX, "up", endgameState);
-			}
-		}
-		else if(((String)action).equals("down")) {
-			boolean canMove = canMove(ironmanCoordinatesY, ironmanCoordinatesX, warriorsCoordinatesString, stonesCoordinatesString, "down");
-			if(canMove) {
-				returnedEndgameState = moveActionState(ironmanCoordinatesY, ironmanCoordinatesX, "down", endgameState);
-			}
-		}
-		else if(((String)action).equals("left")) {
-			boolean canMove = canMove(ironmanCoordinatesY, ironmanCoordinatesX, warriorsCoordinatesString, stonesCoordinatesString, "left");
-			if(canMove) {
-				returnedEndgameState = moveActionState(ironmanCoordinatesY, ironmanCoordinatesX, "left", endgameState);
-			}
-		}
-		else if(((String)action).equals("right")) {
-			boolean canMove = canMove(ironmanCoordinatesY, ironmanCoordinatesX, warriorsCoordinatesString, stonesCoordinatesString, "right");
-			if(canMove) {
-				returnedEndgameState = moveActionState(ironmanCoordinatesY, ironmanCoordinatesX, "right", endgameState);
+				returnedEndgameState = moveActionState(ironmanCoordinatesY, ironmanCoordinatesX, actionString, endgameState);
 			}
 		}
 		//other actions
@@ -182,7 +164,11 @@ public class Endgame extends Problem {
 		}
 	}
 
-
+	public boolean isMove(String action) {
+		if(action.equals("up") || action.equals("down") || action.equals("up") || action.equals("left") || action.equals("right"))
+			return true;
+		return false;
+	}
 	public boolean canMove(int ironmanCoordinatesY, int ironmanCoordinatesX, String warriorsCoordinatesInput,String stonesCoordinatesInput, String direction) {
 		ArrayList<int[]> warriorsCoordinates = stringCoordinatesToArrayListCoordinates(warriorsCoordinatesInput);
 		int[] gridSizeArray = stringCoordinatesToArrayCoordinates(gridSize);
