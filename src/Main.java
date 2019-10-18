@@ -192,15 +192,19 @@ public class Main{
 
 	public static String solve(String grid, String strategy, boolean visualize) {
 		String[] operators = {"up", "down", "left", "right", "collect", "kill", "snap"};
-		EndGameInfo endgameInfo = StringtoGrid(grid);
 		String[] coordinates = grid.split(";");
+		String gridSizeString = coordinates[0];
+		String ironmanCoordinates = coordinates[1];
+		String thanosCoordinates = coordinates[2];
+		String stonesCoordinates = coordinates[3];
+		String warriorsCoordinates = coordinates[4];
 		String outputString = "";
 		problem = new Endgame(operators, new EndGameState(
-				coordinates[1] + ";" + coordinates[4] + ";" + coordinates[3]
+				ironmanCoordinates + ";" + warriorsCoordinates + ";" + stonesCoordinates
 				)
 				);
-		Endgame.ThanosCoordinates = endgameInfo.getThanosCoordinates();
-		Endgame.gridSize = endgameInfo.getGridSize();
+		Endgame.ThanosCoordinates = thanosCoordinates;
+		Endgame.gridSize = gridSizeString;
 		Node nodef = Search(problem, strategy);
 		ArrayList<Node> nodesFRomRoot = nodef.getPathFromRoot();
 
@@ -232,50 +236,5 @@ public class Main{
 			}
 		}
 	}
-
-	public static EndGameInfo StringtoGrid(String grid) {
-
-		String[] inputString = grid.split(";");
-		String[] gridCoordinates = inputString[0].split(",");
-		String[] ironManCoordinates = inputString[1].split(",");
-		String[] thanosCoordinates = inputString[2].split(",");
-		String[] stonesCoordinatesString = inputString[3].split(",");
-		ArrayList<int[]> stonesCoordinatesArray = new ArrayList<int[]>();
-		String[] warriorsCoordinatesString = inputString[4].split(",");
-		ArrayList<int[]> warriorsCoordinatesArray = new ArrayList<int[]>();
-		String[][] finalGrid = new String[Integer.parseInt(gridCoordinates[0])][Integer.parseInt(gridCoordinates[1])];
-
-		for(int i = 0; i<stonesCoordinatesString.length; i+=2) {
-			finalGrid[Integer.parseInt(stonesCoordinatesString[i])][Integer.parseInt(stonesCoordinatesString[i+1])] = "S";
-			stonesCoordinatesArray.add(
-					new int[]{
-							Integer.parseInt(stonesCoordinatesString[i])
-							,Integer.parseInt(stonesCoordinatesString[i+1])
-					}
-					);
-		}
-		for(int i = 0; i<warriorsCoordinatesString.length; i+=2) {
-			finalGrid[Integer.parseInt(warriorsCoordinatesString[i])][Integer.parseInt(warriorsCoordinatesString[i+1])] = "W";
-			warriorsCoordinatesArray.add(
-					new int[]{
-							Integer.parseInt(warriorsCoordinatesString[i])
-							,Integer.parseInt(warriorsCoordinatesString[i+1])
-					}
-					);
-		}
-		//ThanosCoordinates = new int[] {Integer.parseInt(thanosCoordinates[0]), Integer.parseInt(thanosCoordinates[1])};
-		finalGrid[Integer.parseInt(ironManCoordinates[0])][Integer.parseInt(ironManCoordinates[1])] = "I";
-		finalGrid[Integer.parseInt(thanosCoordinates[0])][Integer.parseInt(thanosCoordinates[1])] = "T";
-
-		for(int i = 0; i<finalGrid.length; i++) {
-			for(int j = 0 ; j<finalGrid[0].length; j++) {
-				if(finalGrid[i][j] == "")
-					finalGrid[i][j] = "E";
-			}	
-		}
-
-		return new EndGameInfo(inputString[0], inputString[1], inputString[2], new String[] {inputString[4], inputString[3]});
-	}
-	
 	
 }
