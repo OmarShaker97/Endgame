@@ -7,14 +7,32 @@ public class Node  {
 	Object operator;
 	int depth;
 	int pathCost;
+	int stepCost;
+	int heuristicCost;
 
-	public Node(Object state, Node parent, Object operator, int depth, int pathCost) {
+	public Node(Object state, Node parent, Object operator, int depth, int stepCost, int heuristicCost) {
 		this.state = state;
 		this.parent = parent;
 		this.operator = operator;
 		this.depth = depth;
-		this.pathCost = pathCost;
-		//setPathCost(setpCost);
+		this.heuristicCost = heuristicCost;
+		this.stepCost = stepCost;
+		if(parent!=null)
+			this.pathCost = parent.getPathCost() + stepCost;
+		else
+			this.pathCost = 0;
+	}
+	
+	public Node(Object state, Node parent, Object operator, int depth, int stepCost) {
+		this.state = state;
+		this.parent = parent;
+		this.operator = operator;
+		this.depth = depth;
+		this.stepCost = stepCost;
+		if(parent!=null)
+			this.pathCost = parent.getPathCost() + stepCost;
+		else
+			this.pathCost = 0;
 	}
 
 	public String toString()
@@ -25,14 +43,6 @@ public class Node  {
 			return "state: "+null+" operator:"+operator+" depth:"+depth+" pathCost:"+pathCost;
 		}
 	}
-
-	//	public Node(Object state, Node parent, Object operator, int depth, int setpCost) {
-	//		this.state = state;
-	//		this.parent = parent;
-	//		this.operator = operator;
-	//		this.depth = depth;
-	//		setPathCost(setpCost);
-	//	}
 
 	public Object getState() {
 		return state;
@@ -83,6 +93,22 @@ public class Node  {
 		}
 		path.add(0, current);
 		return path;
+	}
+	
+	public int getStepCost() {
+		return stepCost;
+	}
+
+	public void setStepCost(int stepCost) {
+		this.stepCost = stepCost;
+	}
+
+	public int getHeuristicCost() {
+		return heuristicCost;
+	}
+
+	public void setHeuristicCost(int heuristicCost) {
+		this.heuristicCost = heuristicCost;
 	}
 
 
