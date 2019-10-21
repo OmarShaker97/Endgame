@@ -373,7 +373,7 @@ public class Endgame extends Problem {
 			System.out.print(i+ " ");
 			for(int j = 0 ; j<gridSizeArray[1]; j++) {
 				boolean found = false;
-				
+
 				for(int ii =0; ii<warriorsCoordinatesArray.size();ii++ ) {
 					int[] curr = warriorsCoordinatesArray.get(ii);
 					if(curr[0] >= 0 && curr[1] >= 0) {
@@ -384,25 +384,28 @@ public class Endgame extends Problem {
 					}
 
 				}
-				
-				for(int ii =0; ii<stonesCoordinatesArray.size();ii++ ) {
-					int[] curr = stonesCoordinatesArray.get(ii);
-					if(curr[0] == i && curr[1] == j) {
-						System.out.print("S" + " ");
-						found = true;
-					}
 
-				}
-				
-				if(i == ironmanCoordinatesArray[0] && j == ironmanCoordinatesArray[1]) {
+				if(i == ironmanCoordinatesArray[0] && j == ironmanCoordinatesArray[1] && !found) {
 					System.out.print("I" + " ");
 					found = true;
 				}
-				else if((i == thanosCoordinates[0] && j == thanosCoordinates[1])){
+
+				if(!found) {
+					for(int ii =0; ii<stonesCoordinatesArray.size();ii++ ) {
+						int[] curr = stonesCoordinatesArray.get(ii);
+						if(curr[0] == i && curr[1] == j) {
+							System.out.print("S" + " ");
+							found = true;
+						}
+
+					}
+				}
+
+				else if((i == thanosCoordinates[0] && j == thanosCoordinates[1]) && !found){
 					System.out.print("T" + " ");
 					found = true;
 				}
-				
+
 				if(!found)
 					System.out.print("E"+" ");
 				//				else {
