@@ -6,11 +6,11 @@ public class Main{
 	static int count;
 
 	public static void main(String[] args) {
-		count =0;
+		count = 0;
 		long startTime = System.currentTimeMillis();
 		String gridString = "5,5;1,2;3,1;0,2,1,1,2,1,2,2,4,0,4,1;0,3,3,0,3,2,3,4,4,3";
 		//String gridString = "15,15;7,7;5,9;0,2,3,7,5,4,8,12,11,6,13,10;0,3,4,5,8,3,9,7,14,3";
-		solve(gridString, "BF", true);
+		solve(gridString, "GR1", true);
 		long endTime = System.currentTimeMillis();
 		long totalTime = endTime - startTime;
 		System.out.println("\n" + totalTime + " milliseconds");
@@ -35,7 +35,7 @@ public class Main{
 		else if(strategy.equals("UC")) {
 			node = UCS(problem);
 		}
-		
+
 		else {
 			node = GR1(problem);
 		}
@@ -60,7 +60,12 @@ public class Main{
 					if(expandedNodes[i].getState() != null) {
 						count+=1;
 						nodes.add(expandedNodes[i]);
-						expandedNodes[i].setHeuristicCost(100 - expandedNodes[i].getPathCost());
+						try {
+							expandedNodes[i].setHeuristicCost(((EndGameState)(expandedNodes[i].getState())).getCoordinates().split(";")[2].length());
+						}
+						catch(Exception E){
+							expandedNodes[i].setHeuristicCost(0);
+						}
 					}
 				}
 				nodes.sort(new NodeComparatorGR1());
@@ -68,6 +73,7 @@ public class Main{
 			if(nodes.size() == 0) {
 				System.out.println("out of length");
 				cont = false;
+				break;
 			}
 
 			//cont = false;
@@ -249,14 +255,14 @@ public class Main{
 
 
 		System.out.println(outputString);
-		
+
 		if(visualize) {
 			visualize(visualize, nodesFRomRoot);
 		}
-		
+
 		return outputString;
 	}
-	
+
 	public static void visualize(boolean visualize, ArrayList<Node> nodesFRomRoot) {
 		if(visualize) {
 			for(int i=0;i<nodesFRomRoot.size();i++) {
@@ -265,5 +271,5 @@ public class Main{
 			}
 		}
 	}
-	
+
 }
