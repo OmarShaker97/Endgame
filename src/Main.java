@@ -9,9 +9,9 @@ public class Main{
 	public static void main(String[] args) {
 		count = 0;
 		long startTime = System.currentTimeMillis();
-		//String gridString = "5,5;1,2;3,1;0,2,1,1,2,1,2,2,4,0,4,1;0,3,3,0,3,2,3,4,4,3";
-		String gridString = "15,15;7,7;5,9;0,2,3,7,5,4,8,12,11,6,13,10;0,3,4,5,8,3,9,7,14,3";
-		solve(gridString, "GR1", true);
+		String gridString = "5,5;1,2;3,1;0,2,1,1,2,1,2,2,4,0,4,1;0,3,3,0,3,2,3,4,4,3";
+		//String gridString = "15,15;7,7;5,9;0,2,3,7,5,4,8,12,11,6,13,10;0,3,4,5,8,3,9,7,14,3";
+		solve(gridString, "BF", true);
 		long endTime = System.currentTimeMillis();
 		long totalTime = endTime - startTime;
 		System.out.println("\n" + totalTime + " milliseconds");
@@ -241,22 +241,30 @@ public class Main{
 		Endgame.ThanosCoordinates = thanosCoordinates;
 		Endgame.gridSize = gridSizeString;
 		Node nodef = Search(problem, strategy);
-		ArrayList<Node> nodesFRomRoot = nodef.getPathFromRoot();
 
-		for(int i=0;i<nodesFRomRoot.size();i++) {
-			outputString += nodesFRomRoot.get(i).getOperator() + ",";
+		if(nodef != null) {
+			ArrayList<Node> nodesFRomRoot = nodef.getPathFromRoot();
+
+			for(int i=0;i<nodesFRomRoot.size();i++) {
+				outputString += nodesFRomRoot.get(i).getOperator() + ",";
+			}
+
+			outputString = outputString.substring(1, outputString.length() - 1);
+			outputString+= ";" + nodef.getPathCost();
+			outputString+= ";" + count;
+			//System.out.print(nodef.getDepth());
+
+
+			System.out.println(outputString);
+
+			if(visualize) {
+				visualize(visualize, nodesFRomRoot);
+			}
+
 		}
 
-		outputString = outputString.substring(1, outputString.length() - 1);
-		outputString+= ";" + nodef.getPathCost();
-		outputString+= ";" + count;
-		//System.out.print(nodef.getDepth());
-
-
-		System.out.println(outputString);
-
-		if(visualize) {
-			visualize(visualize, nodesFRomRoot);
+		else {
+			outputString = "There is no solution.";
 		}
 
 		return outputString;

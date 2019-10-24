@@ -35,7 +35,7 @@ public class Endgame extends Problem {
 		String stonesCoordinatesString = "";
 		if(coordinates.length == 3)
 			stonesCoordinatesString = coordinates[2];
-		 warriorsCoordinatesGlobal = stringCoordinatesToArrayListCoordinates(warriorsCoordinatesString);
+		warriorsCoordinatesGlobal = stringCoordinatesToArrayListCoordinates(warriorsCoordinatesString);
 		stonesCoordinatesGlobal = stringCoordinatesToArrayListCoordinates(stonesCoordinatesString);
 		/*parsing string to array*/
 		stepCost = 0;
@@ -85,8 +85,8 @@ public class Endgame extends Problem {
 		if(pos.length() == 0) {
 			return coordinates;
 		}
-			String[] positions = pos.split(",");
-			for(byte i = 0; i<positions.length; i+=2) {
+		String[] positions = pos.split(",");
+		for(byte i = 0; i<positions.length; i+=2) {
 			coordinates.add(
 					new byte[]{
 							Byte.parseByte(positions[i])

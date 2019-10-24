@@ -22,7 +22,7 @@ public class Node  {
 		else
 			this.pathCost = 0;
 	}
-	
+
 	public Node(Object state, Node parent, Object operator, int depth, int stepCost) {
 		this.state = state;
 		this.parent = parent;
@@ -94,7 +94,7 @@ public class Node  {
 		path.add(0, current);
 		return path;
 	}
-	
+
 	public int getStepCost() {
 		return stepCost;
 	}
