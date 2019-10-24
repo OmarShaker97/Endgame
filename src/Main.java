@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.PriorityQueue;
 
 public class Main{
 	static Endgame problem;
@@ -8,8 +9,8 @@ public class Main{
 	public static void main(String[] args) {
 		count = 0;
 		long startTime = System.currentTimeMillis();
-		String gridString = "5,5;1,2;3,1;0,2,1,1,2,1,2,2,4,0,4,1;0,3,3,0,3,2,3,4,4,3";
-		//String gridString = "15,15;7,7;5,9;0,2,3,7,5,4,8,12,11,6,13,10;0,3,4,5,8,3,9,7,14,3";
+		//String gridString = "5,5;1,2;3,1;0,2,1,1,2,1,2,2,4,0,4,1;0,3,3,0,3,2,3,4,4,3";
+		String gridString = "15,15;7,7;5,9;0,2,3,7,5,4,8,12,11,6,13,10;0,3,4,5,8,3,9,7,14,3";
 		solve(gridString, "GR1", true);
 		long endTime = System.currentTimeMillis();
 		long totalTime = endTime - startTime;
@@ -36,7 +37,7 @@ public class Main{
 			node = UCS(problem);
 		}
 
-		else {
+		else if(strategy.equals("GR1")) {
 			node = GR1(problem);
 		}
 
@@ -46,10 +47,10 @@ public class Main{
 	}
 	public static Node GR1(Problem problem) {
 		boolean cont = true;
-		ArrayList<Node> nodes = new ArrayList<Node>();
+		PriorityQueue<Node> nodes = new PriorityQueue<Node>(new NodeComparatorGR1());
 		nodes.add(new Node(problem.getInitialState(), null, "", 0, 0));
 		while(cont) {
-			Node node = nodes.remove(0);
+			Node node = nodes.remove();
 			if(problem.goalTest(node)) {
 				return node;
 			}
@@ -68,7 +69,6 @@ public class Main{
 						}
 					}
 				}
-				nodes.sort(new NodeComparatorGR1());
 			}
 			if(nodes.size() == 0) {
 				System.out.println("out of length");
@@ -85,6 +85,7 @@ public class Main{
 
 	public static Node BFS(Problem problem) {
 		boolean cont = true;
+		String[] actions = (String[])problem.getOperators();
 		ArrayList<Node> nodes = new ArrayList<Node>();
 		nodes.add(new Node(problem.getInitialState(), null, "", 0, 0));
 		while(cont) {
@@ -96,7 +97,7 @@ public class Main{
 			}
 			if(!problem.isVisited(node.getState()) && node.getPathCost()<100) {
 				problem.putinVisitedStates(node.getState());
-				Node[] expandedNodes = problem.expand(node, problem.getOperators());
+				Node[] expandedNodes = problem.expand(node, actions);
 				for(int i=0;i<expandedNodes.length;i++) {
 					//System.out.println("Node"+i+":"+expandedNodes[i].toString());
 					if(expandedNodes[i].getState() != null) {
@@ -121,10 +122,10 @@ public class Main{
 
 	public static Node UCS(Problem problem) {
 		boolean cont = true;
-		ArrayList<Node> nodes = new ArrayList<Node>();
+		PriorityQueue<Node> nodes = new PriorityQueue<Node>(new NodeComparator());
 		nodes.add(new Node(problem.getInitialState(), null, "", 0, 0));
 		while(cont) {
-			Node node = nodes.remove(0);
+			Node node = nodes.remove();
 			if(problem.goalTest(node)) {
 				return node;
 			}
@@ -137,7 +138,6 @@ public class Main{
 						nodes.add(expandedNodes[i]);
 					}
 				}
-				nodes.sort(new NodeComparator());
 			}
 			if(nodes.size() == 0) {
 				System.out.println("out of length");
@@ -249,8 +249,7 @@ public class Main{
 
 		outputString = outputString.substring(1, outputString.length() - 1);
 		outputString+= ";" + nodef.getPathCost();
-		outputString+= ";" + nodef.getDepth();
-		System.out.println(count);
+		outputString+= ";" + count;
 		//System.out.print(nodef.getDepth());
 
 
