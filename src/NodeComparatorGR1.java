@@ -17,6 +17,7 @@ public class NodeComparatorGR1 implements Comparator<Node> {
 			return 1;
 		else if (n2Stuff.length != 3)
 			return -1;
+		
 		if(n2Stuff[2].length() == n1Stuff[2].length())  
 			return 0;  
 		else if(n1Stuff[2].length() > n2Stuff[2].length()) 
