@@ -251,11 +251,11 @@ public class Main{
 
 	public static Node UCS(Problem problem) {
 		boolean cont = true;
-		ArrayList<Node> nodes = new ArrayList<Node>();
+		PriorityQueue<Node> nodes = new PriorityQueue<Node>(new NodeComparator());
 		nodes.add(new Node(problem.getInitialState(), null, "", 0, 0));
 		while(cont) {
 			//System.out.println(nodes.size());
-			Node node = nodes.remove(0);
+			Node node = nodes.remove();
 			if(problem.goalTest(node)) {
 				return node;
 			}
@@ -268,7 +268,6 @@ public class Main{
 						count+=1;
 					}
 				}
-				nodes.sort(new NodeComparator());
 			}
 			if(nodes.size() == 0) {
 				System.out.println("out of length");
