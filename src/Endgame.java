@@ -34,14 +34,6 @@ public class Endgame extends Problem {
 
 		stepCost = 0;
 		damageFromAdjacentCells(ironmanCoordinatesY, ironmanCoordinatesX, warriorsCoordinatesString);
-		String[] coordinatesToPrint = endgameState.getCoordinates().split(";");
-		//		System.out.println(node.getPathCost());
-		//		System.out.println("ironman coord:"+coordinatesToPrint[0]);
-		//		System.out.println("warriors:"+coordinatesToPrint[1]);
-		//		System.out.println("stones:"+coordinatesToPrint[2]);
-		//		System.out.println(action);
-		//printGrid(endgameState);
-		//System.out.println("VVVVVVVVVV");
 		//movements
 		if(((String)action).equals("up")) {
 			boolean canMove = canMove(ironmanCoordinatesY, ironmanCoordinatesX, warriorsCoordinatesString, stonesCoordinatesString, "up");
@@ -77,23 +69,10 @@ public class Endgame extends Problem {
 		else if(((String)action).equals("kill")) {	
 			returnedEndgameState = killActionState(ironmanCoordinatesY, ironmanCoordinatesX, warriorsCoordinatesString,  endgameState);
 		}
-		//System.out.println(node.getPathCost());
-		if(returnedEndgameState!=null) {
-			String[] coordinatesToPrint1 = returnedEndgameState.getCoordinates().split(";");
-			//			System.out.println("ironman coord:"+coordinatesToPrint1[0]);
-			//			System.out.println("warriors:"+coordinatesToPrint1[1]);
-			//			System.out.println("stones:"+coordinatesToPrint1[2]);
-			// printGrid(returnedEndgameState);
-
-		}
-		else {
-			//System.out.println("null state");
-		}
-		//returnedEndgameState.setHp(returnedEndgameState.getHp()-damageFromAdjacentCells(ironmanCoordinatesY, ironmanCoordinatesX, warriorsCoordinatesString));
 		Node returnedNode = new Node(returnedEndgameState, node, action, node.getDepth()+1,0 );
 		calculatePathCost(returnedNode, stepCost);
-		//		System.out.println(returnedNode.getPathCost());
-		//		System.out.println("------------");
+		if(returnedEndgameState==null || node.getPathCost()>100)
+			return null;
 		return returnedNode;
 	}
 
@@ -459,15 +438,51 @@ public class Endgame extends Problem {
 		}
 		return false;
 	}
+	
+	@Override
+	public void putinVisitedStates(Object state) {
+		EndGameState endgameState = (EndGameState) state;
+		visitedStates.add(endgameState.getCoordinates());
+	}
 
 	@Override
 	public void calculatePathCost(Node node, int stepCost) {
 		node.setPathCost(node.parent.getPathCost()+stepCost);
 	}
-
-	@Override
-	public void putinVisitedStates(Object state) {
-		EndGameState endgameState = (EndGameState) state;
-		visitedStates.add(endgameState.getCoordinates());
+	
+	public void setAS1Heurstic(Node node) {
+		try {
+		node.setHeuristicCost(((EndGameState)(node.getState())).getCoordinates().split(";")[2].length()*3 + node.getPathCost());
+		}
+		catch(Exception E){
+			node.setHeuristicCost(0);
+		}
+	}
+	
+	public void setAS2Heurstic(Node node) {
+		try {
+			node.setHeuristicCost(((EndGameState)(node.getState())).getCoordinates().split(";")[2].length()*3 + (Endgame.thanosDamage*2) + node.getPathCost());
+		}
+		catch(Exception E){
+			node.setHeuristicCost(Endgame.thanosDamage*2);
+		}
+	}
+	
+	public void setGR1Heurstic(Node node) {
+		try {
+			node.setHeuristicCost(((EndGameState)(node.getState())).getCoordinates().split(";")[2].length());
+		}
+		catch(Exception E){
+			node.setHeuristicCost(0);
+		}
+	}
+	
+	public void setGR2Heurstic(Node node) {
+		try {
+			node.setHeuristicCost(((EndGameState)(node.getState())).getCoordinates().split(";")[2].length() + (Endgame.thanosDamage*2));
+		}
+		catch(Exception E){
+			node.setHeuristicCost(Endgame.thanosDamage*2);
+		}
 	}
 }

@@ -9,7 +9,7 @@ public class Main{
 	public static void main(String[] args) {
 		count = 0;
 		long startTime = System.currentTimeMillis();
-		String gridString = "15,15;12,13;5,7;7,0,9,14,14,8,5,8,8,9,8,4;6,6,4,3,10,2,7,4,3,11";
+		String gridString = "13,13;4,2;2,4;6,1,1,10,8,4,9,2,2,8,9,4;6,4,3,4,3,11,1,12,1,9";
 		solve(gridString, "ID", true);
 		long endTime = System.currentTimeMillis();
 		long totalTime = endTime - startTime;
@@ -66,18 +66,19 @@ public class Main{
 			if(problem.goalTest(node)) {
 				return node;
 			}
-			if(!problem.isVisited(node.getState()) && node.getPathCost()<100) {
+			if(!problem.isVisited(node.getState())) {
 				problem.putinVisitedStates(node.getState());
 				Node[] expandedNodes = problem.expand(node, problem.getOperators());
 				for(int i=0;i<expandedNodes.length;i++) {
-					if(expandedNodes[i].getState() != null) {
+					Node newNode = expandedNodes[i];
+					if(newNode!=null) {
 						count+=1;
-						nodes.add(expandedNodes[i]);
+						nodes.add(newNode);
 						try {
-							expandedNodes[i].setHeuristicCost(((EndGameState)(expandedNodes[i].getState())).getCoordinates().split(";")[2].length());
+							newNode.setHeuristicCost(((EndGameState)(expandedNodes[i].getState())).getCoordinates().split(";")[2].length());
 						}
 						catch(Exception E){
-							expandedNodes[i].setHeuristicCost(0);
+							newNode.setHeuristicCost(0);
 						}
 					}
 				}
@@ -104,18 +105,19 @@ public class Main{
 			if(problem.goalTest(node)) {
 				return node;
 			}
-			if(!problem.isVisited(node.getState()) && node.getPathCost()<100) {
+			if(!problem.isVisited(node.getState())) {
 				problem.putinVisitedStates(node.getState());
 				Node[] expandedNodes = problem.expand(node, problem.getOperators());
 				for(int i=0;i<expandedNodes.length;i++) {
-					if(expandedNodes[i].getState() != null) {
+					Node newNode = expandedNodes[i];
+					if(newNode!=null) {
 						count+=1;
-						nodes.add(expandedNodes[i]);
+						nodes.add(newNode);
 						try {
-							expandedNodes[i].setHeuristicCost(((EndGameState)(expandedNodes[i].getState())).getCoordinates().split(";")[2].length() + (Endgame.thanosDamage*2));
+							newNode.setHeuristicCost(((EndGameState)(expandedNodes[i].getState())).getCoordinates().split(";")[2].length() + (Endgame.thanosDamage*2));
 						}
 						catch(Exception E){
-							expandedNodes[i].setHeuristicCost(Endgame.thanosDamage*2);
+							newNode.setHeuristicCost(Endgame.thanosDamage*2);
 						}
 					}
 				}
@@ -123,10 +125,7 @@ public class Main{
 			if(nodes.size() == 0) {
 				System.out.println("out of length");
 				cont = false;
-				break;
 			}
-
-			//cont = false;
 		}
 
 		return null;
@@ -142,18 +141,19 @@ public class Main{
 			if(problem.goalTest(node)) {
 				return node;
 			}
-			if(!problem.isVisited(node.getState()) && node.getPathCost()<100) {
+			if(!problem.isVisited(node.getState())) {
 				problem.putinVisitedStates(node.getState());
 				Node[] expandedNodes = problem.expand(node, problem.getOperators());
 				for(int i=0;i<expandedNodes.length;i++) {
-					if(expandedNodes[i].getState() != null) {
+					Node newNode = expandedNodes[i];
+					if(newNode!=null) {
 						count+=1;
 						nodes.add(expandedNodes[i]);
 						try {
-							expandedNodes[i].setHeuristicCost(((EndGameState)(expandedNodes[i].getState())).getCoordinates().split(";")[2].length()*3 + expandedNodes[i].getPathCost());
+							newNode.setHeuristicCost(((EndGameState)(expandedNodes[i].getState())).getCoordinates().split(";")[2].length()*3 + expandedNodes[i].getPathCost());
 						}
 						catch(Exception E){
-							expandedNodes[i].setHeuristicCost(0);
+							newNode.setHeuristicCost(0);
 						}
 					}
 				}
@@ -161,10 +161,7 @@ public class Main{
 			if(nodes.size() == 0) {
 				System.out.println("out of length");
 				cont = false;
-				break;
 			}
-
-			//cont = false;
 		}
 
 		return null;
@@ -180,18 +177,19 @@ public class Main{
 			if(problem.goalTest(node)) {
 				return node;
 			}
-			if(!problem.isVisited(node.getState()) && node.getPathCost()<100) {
+			if(!problem.isVisited(node.getState())) {
 				problem.putinVisitedStates(node.getState());
 				Node[] expandedNodes = problem.expand(node, problem.getOperators());
 				for(int i=0;i<expandedNodes.length;i++) {
-					if(expandedNodes[i].getState() != null) {
+					Node newNode = expandedNodes[i];
+					if(newNode!=null) {
 						count+=1;
-						nodes.add(expandedNodes[i]);
+						nodes.add(newNode);
 						try {
-							expandedNodes[i].setHeuristicCost(((EndGameState)(expandedNodes[i].getState())).getCoordinates().split(";")[2].length()*3 + (Endgame.thanosDamage*2) + expandedNodes[i].getPathCost());
+							newNode.setHeuristicCost(((EndGameState)(expandedNodes[i].getState())).getCoordinates().split(";")[2].length()*3 + (Endgame.thanosDamage*2) + expandedNodes[i].getPathCost());
 						}
 						catch(Exception E){
-							expandedNodes[i].setHeuristicCost(Endgame.thanosDamage*2);
+							newNode.setHeuristicCost(Endgame.thanosDamage*2);
 						}
 					}
 				}
@@ -215,18 +213,15 @@ public class Main{
 		ArrayList<Node> nodes = new ArrayList<Node>();
 		nodes.add(new Node(problem.getInitialState(), null, "", 0, 0));
 		while(cont) {
-			//System.out.println(nodes.size());
 			Node node = nodes.remove(0);
-
 			if(problem.goalTest(node)) {
 				return node;
 			}
-
-			if(!problem.isVisited(node.getState()) && node.getPathCost()<100) {
+			if(!problem.isVisited(node.getState())) {
 				Node[] expandedNodes = problem.expand(node, problem.getOperators());
 				for(int i=0;i<expandedNodes.length;i++) {
-					//System.out.println("Node"+i+":"+expandedNodes[i].toString());
-					if(expandedNodes[i].getState() != null) {
+					Node childNode = expandedNodes[i];
+					if(childNode!=null) {
 						nodes.add(expandedNodes[i]);
 						count+=1;
 					}
@@ -258,15 +253,16 @@ public class Main{
 			if(problem.goalTest(node)) {
 				return node;
 			}
-			if(!problem.isVisited(node.getState()) && node.getPathCost()<100) {
-				problem.putinVisitedStates(node.getState());
+			if(!problem.isVisited(node.getState())) {
 				Node[] expandedNodes = problem.expand(node, problem.getOperators());
 				for(int i=0;i<expandedNodes.length;i++) {
-					if(expandedNodes[i].getState() != null) {
+					Node childNode = expandedNodes[i];
+					if(childNode!=null) {
 						nodes.add(expandedNodes[i]);
 						count+=1;
 					}
-				}
+				}	
+				problem.putinVisitedStates(node.getState());
 			}
 			if(nodes.size() == 0) {
 				System.out.println("out of length");
@@ -290,11 +286,11 @@ public class Main{
 			if(problem.goalTest(node)) {
 				return node;
 			}
-			if(!problem.isVisited(node.getState()) && node.getPathCost()<100) {
+			if(!problem.isVisited(node.getState())) {
 				Node[] expandedNodes = problem.expand(node, problem.getOperators());
 				for(int i=0;i<expandedNodes.length;i++) {
-					//System.out.println("Node"+i+":"+expandedNodes[i].toString());
-					if(expandedNodes[i].getState() != null) {
+					Node childNode = expandedNodes[i];
+					if(childNode!=null) {
 						nodes.add(0, expandedNodes[i]);
 						count+=1;
 					}
@@ -321,40 +317,25 @@ public class Main{
 		int depthLimit = 0;
 		while(cont) {
 			Node node = nodes.remove(0);
-
 			if(problem.goalTest(node)) {
 				return node;
 			}
-
-			if(!problem.isVisited(node.getState()) && node.getPathCost()<100) {
+			if(!problem.isVisited(node.getState())) {
 				Node[] expandedNodes = problem.expand(node, problem.getOperators());
 				for(int i=0;i<expandedNodes.length;i++) {
-					if(expandedNodes[i].getState() != null && expandedNodes[i].getDepth() <= depthLimit) {
+					Node childNode = expandedNodes[i];
+					if(childNode!=null && childNode.getDepth() <= depthLimit) {
 						nodes.add(0, expandedNodes[i]);
 						count+=1;
 					}
 				}	
 				problem.putinVisitedStates(node.getState());
 			}
-
-			//			if(depthLimit > node.getDepth()) {
-			//				for(int i = 0; i<nodes.size();i++)
-			//					nodes.remove(i);
-			//				problem.setVisitedStates(new HashSet<String>());
-			//				nodes.add(new Node(problem.getInitialState(), null, "", 0, 0));
-			//				depthLimit+=1;
-			//			}
-
 			if(nodes.size() == 0) {
-				//System.out.println("out of length");
 				problem.visitedStates.clear();
-			//	problem.setVisitedStates(new HashSet<String>());
 				nodes.add(initialNode);
 				depthLimit+=1;
-				//cont = false;
 			}
-
-			//cont = false;
 		}
 
 		return null;
