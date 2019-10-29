@@ -1,4 +1,3 @@
-
 import java.util.HashSet;
 public abstract class Problem {
 
@@ -19,6 +18,10 @@ public abstract class Problem {
 	public abstract void calculatePathCost(Node node, int stepCost);
 
 	public abstract Node[] expand(Node node, Object[] operators);
+	
+	public abstract void putinVisitedStates(Object state);
+
+	public abstract boolean isVisited(Object state);
 
 	public Object[] getOperators() {
 		return operators;
@@ -43,10 +46,6 @@ public abstract class Problem {
 	public void setVisitedStates(HashSet<String> visitedStates) {
 		this.visitedStates = visitedStates;
 	}
-
-	public abstract void putinVisitedStates(Object state);
-
-	public abstract boolean isVisited(Object state);
 
 
 }

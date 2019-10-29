@@ -19,8 +19,8 @@ public class NodeComparatorAS2 implements Comparator<Node> {
 			return -1;
 		
 		
-		byte totalDamageN1 = (byte) (((EndGameState)n1.getState()).getCoordinates().split(";")[2].length() * 3 + Endgame.thanosDamage + n1.getPathCost());
-		byte totalDamageN2 = (byte) (((EndGameState)n2.getState()).getCoordinates().split(";")[2].length() * 3 + Endgame.thanosDamage + n2.getPathCost());
+		byte totalDamageN1 = (byte) (((EndGameState)n1.getState()).getCoordinates().split(";")[2].length() * 3 + (Endgame.thanosDamage*2) + n1.getPathCost());
+		byte totalDamageN2 = (byte) (((EndGameState)n2.getState()).getCoordinates().split(";")[2].length() * 3 + (Endgame.thanosDamage*2) + n2.getPathCost());
 		
 		if(totalDamageN2 == totalDamageN1)  
 			return 0;  

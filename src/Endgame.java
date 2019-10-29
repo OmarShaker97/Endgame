@@ -179,6 +179,9 @@ public class Endgame extends Problem {
 		if(ironmanCoordinatesX + 1 == thanosCoordinatesX && (ironmanCoordinatesY == thanosCoordinatesY)) {
 			stepCost=stepCost+5;
 		}
+		if(ironmanCoordinatesX == thanosCoordinatesX && (ironmanCoordinatesY == thanosCoordinatesY)) {
+			stepCost=stepCost+5;
+		}
 		if(stepCost!=0) {
 			//System.out.println("damage from thanos");
 		}
@@ -420,6 +423,11 @@ public class Endgame extends Problem {
 					System.out.print("I" + " ");
 					found = true;
 				}
+				
+				if((i == thanosCoordinates[0] && j == thanosCoordinates[1]) && !found){
+					System.out.print("T" + " ");
+					found = true;
+				}
 
 				if(!found) {
 					for(int ii =0; ii<stonesCoordinatesArray.size();ii++ ) {
@@ -430,11 +438,6 @@ public class Endgame extends Problem {
 						}
 
 					}
-				}
-
-				else if((i == thanosCoordinates[0] && j == thanosCoordinates[1]) && !found){
-					System.out.print("T" + " ");
-					found = true;
 				}
 
 				if(!found)
