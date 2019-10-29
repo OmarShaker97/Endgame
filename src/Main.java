@@ -1,5 +1,4 @@
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.PriorityQueue;
 
 public class Main{
@@ -10,8 +9,8 @@ public class Main{
 	public static void main(String[] args) {
 		count = 0;
 		long startTime = System.currentTimeMillis();
-		String gridString = "5,5;2,2;4,2;4,0,1,2,3,0,2,1,4,1,2,4;3,2,0,0,3,4,4,3,4,4";
-		solve(gridString, "AS2", false);
+		String gridString = "15,15;12,13;5,7;7,0,9,14,14,8,5,8,8,9,8,4;6,6,4,3,10,2,7,4,3,11";
+		solve(gridString, "ID", true);
 		long endTime = System.currentTimeMillis();
 		long totalTime = endTime - startTime;
 		System.out.println("\n" + totalTime + " milliseconds");
@@ -151,7 +150,7 @@ public class Main{
 						count+=1;
 						nodes.add(expandedNodes[i]);
 						try {
-							expandedNodes[i].setHeuristicCost(((EndGameState)(expandedNodes[i].getState())).getCoordinates().split(";")[2].length() + expandedNodes[i].getPathCost());
+							expandedNodes[i].setHeuristicCost(((EndGameState)(expandedNodes[i].getState())).getCoordinates().split(";")[2].length()*3 + expandedNodes[i].getPathCost());
 						}
 						catch(Exception E){
 							expandedNodes[i].setHeuristicCost(0);
@@ -189,7 +188,7 @@ public class Main{
 						count+=1;
 						nodes.add(expandedNodes[i]);
 						try {
-							expandedNodes[i].setHeuristicCost(((EndGameState)(expandedNodes[i].getState())).getCoordinates().split(";")[2].length() + (Endgame.thanosDamage*2) + expandedNodes[i].getPathCost());
+							expandedNodes[i].setHeuristicCost(((EndGameState)(expandedNodes[i].getState())).getCoordinates().split(";")[2].length()*3 + (Endgame.thanosDamage*2) + expandedNodes[i].getPathCost());
 						}
 						catch(Exception E){
 							expandedNodes[i].setHeuristicCost(Endgame.thanosDamage*2);
@@ -317,7 +316,8 @@ public class Main{
 	public static Node ID(Problem problem) {
 		boolean cont = true;
 		ArrayList<Node> nodes = new ArrayList<Node>();
-		nodes.add(new Node(problem.getInitialState(), null, "", 0, 0));
+		Node initialNode = new Node(problem.getInitialState(), null, "", 0, 0);
+		nodes.add(initialNode);
 		int depthLimit = 0;
 		while(cont) {
 			Node node = nodes.remove(0);
@@ -347,10 +347,9 @@ public class Main{
 
 			if(nodes.size() == 0) {
 				//System.out.println("out of length");
-				for(int i = 0; i<nodes.size();i++)
-					nodes.remove(i);
-				problem.setVisitedStates(new HashSet<String>());
-				nodes.add(new Node(problem.getInitialState(), null, "", 0, 0));
+				problem.visitedStates.clear();
+			//	problem.setVisitedStates(new HashSet<String>());
+				nodes.add(initialNode);
 				depthLimit+=1;
 				//cont = false;
 			}

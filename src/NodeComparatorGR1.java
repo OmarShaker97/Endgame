@@ -10,20 +10,15 @@ public class NodeComparatorGR1 implements Comparator<Node> {
 	//			return -1;  
 	//	}
 
-	public int compare(Node n1, Node n2) {
-		String[] n1Stuff =  ((EndGameState)n1.getState()).getCoordinates().split(";");
-		String[] n2Stuff =  ((EndGameState)n2.getState()).getCoordinates().split(";");
-		if(n1Stuff.length != 3 )
-			return 1;
-		else if (n2Stuff.length != 3)
-			return -1;
-		
-		if(n2Stuff[2].length() == n1Stuff[2].length())  
-			return 0;  
-		else if(n1Stuff[2].length() > n2Stuff[2].length()) 
-			return 1;  
-		else  
-			return -1;  
-	}
+	  public int compare(Node n1, Node n2) {
+	        byte totalDamageN1 = (byte) (n1.getHeuristicCost());
+	        byte totalDamageN2 = (byte) (n2.getHeuristicCost());
 
+	        if(totalDamageN2 == totalDamageN1)
+	            return 0;
+	        else if(totalDamageN1 > totalDamageN2) 
+	            return 1;
+	        else
+	            return -1;
+	    }
 }
