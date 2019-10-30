@@ -1,5 +1,8 @@
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.PriorityQueue;
+import java.util.Queue;
+import java.util.Stack;
 
 public class Main{
 
@@ -9,8 +12,8 @@ public class Main{
 	public static void main(String[] args) {
 		countOfExtendedNodes = 0;
 		long startTime = System.currentTimeMillis();
-		String gridString = "13,13;4,2;2,4;6,1,1,10,8,4,9,2,2,8,9,4;6,4,3,4,3,11,1,12,1,9";
-		solve(gridString, "AS1", true);
+		String gridString = "15,15;12,13;5,7;7,0,9,14,14,8,5,8,8,9,8,4;6,6,4,3,10,2,7,4,3,11";
+		solve(gridString, "ID2", true);
 		long endTime = System.currentTimeMillis();
 		long totalTime = endTime - startTime;
 		System.out.println("\n" + totalTime + " milliseconds");
@@ -21,13 +24,17 @@ public class Main{
 		Node node = null;
 
 		if(strategy.equals("BF"))
-			node = BFS(problem);
+			node = BFS2(problem);
 
 
 		else if(strategy.equals("DF")) {
-			node = DFS(problem);
+			node = DFS2(problem);
 		}
-
+		
+		else if(strategy.equals("ID2")) {
+			node = ID2(problem);
+		}
+		
 		else if(strategy.equals("ID")) {
 			node = ID(problem);
 		}
@@ -206,6 +213,39 @@ public class Main{
 		return null;
 
 	}
+	
+	public static Node BFS2(Problem problem) {
+		boolean cont = true;
+		Queue<Node> nodes = new LinkedList<Node>();
+		nodes.add(new Node(problem.getInitialState(), null, "", 0, 0));
+		while(cont) {
+			Node node = nodes.poll();
+			if(problem.goalTest(node)) {
+				return node;
+			}
+			if(!problem.isVisited(node.getState())) {
+				Node[] expandedNodes = problem.expand(node, problem.getOperators());
+				for(int i=0;i<expandedNodes.length;i++) {
+					Node childNode = expandedNodes[i];
+					if(childNode!=null) {
+						nodes.add(expandedNodes[i]);
+						countOfExtendedNodes+=1;
+					}
+				}	
+				problem.putinVisitedStates(node.getState());
+			}
+
+
+
+			if(nodes.size() == 0) {
+				System.out.println("out of length");
+				cont = false;
+			}
+		}
+		return null;
+
+			//cont = false;
+		}
 
 
 	public static Node BFS(Problem problem) {
@@ -275,6 +315,39 @@ public class Main{
 		return null;
 
 	}
+	
+	public static Node DFS2(Problem problem) {
+		boolean cont = true;
+		Stack<Node> nodes = new Stack<Node>();
+		nodes.push(new Node(problem.getInitialState(), null, "", 0, 0));
+		while(cont) {
+			//System.out.println(nodes.size());
+			Node node = nodes.pop();
+			if(problem.goalTest(node)) {
+				return node;
+			}
+			if(!problem.isVisited(node.getState())) {
+				Node[] expandedNodes = problem.expand(node, problem.getOperators());
+				for(int i=0;i<expandedNodes.length;i++) {
+					Node childNode = expandedNodes[i];
+					if(childNode!=null) {
+						nodes.push(expandedNodes[i]);
+						countOfExtendedNodes+=1;
+					}
+				}	
+				problem.putinVisitedStates(node.getState());
+			}
+			if(nodes.size() == 0) {
+				System.out.println("out of length");
+				cont = false;
+			}
+
+			//cont = false;
+		}
+
+		return null;
+
+	}
 
 	public static Node DFS(Problem problem) {
 		boolean cont = true;
@@ -310,13 +383,12 @@ public class Main{
 	}
 	
 	public static Node ID2(Problem problem) {
-		boolean cont = true;
-		ArrayList<Node> nodes = new ArrayList<Node>();
+		LinkedList<Node> nodes = new LinkedList<Node>();
 		Node initialNode = new Node(problem.getInitialState(), null, "", 0, 0);
 		nodes.add(initialNode);
 		int depthLimit = 0;
-		while(cont) {
-			Node node = nodes.remove(0);
+		while(true) {
+			Node node = nodes.removeFirst();
 			if(problem.goalTest(node)) {
 				return node;
 			}
@@ -325,7 +397,7 @@ public class Main{
 				for(int i=0;i<expandedNodes.length;i++) {
 					Node childNode = expandedNodes[i];
 					if(childNode!=null && childNode.getDepth() <= depthLimit) {
-						nodes.add(0, expandedNodes[i]);
+						nodes.addFirst(childNode);
 						countOfExtendedNodes+=1;
 					}
 				}	
@@ -337,8 +409,6 @@ public class Main{
 				depthLimit += 1;	
 			}
 		}
-
-		return null;
 
 	}
 
