@@ -4,13 +4,13 @@ import java.util.PriorityQueue;
 public class Main{
 
 	static Endgame problem;
-	static int count;
+	static int countOfExtendedNodes;
 
 	public static void main(String[] args) {
-		count = 0;
+		countOfExtendedNodes = 0;
 		long startTime = System.currentTimeMillis();
 		String gridString = "13,13;4,2;2,4;6,1,1,10,8,4,9,2,2,8,9,4;6,4,3,4,3,11,1,12,1,9";
-		solve(gridString, "ID", true);
+		solve(gridString, "AS1", true);
 		long endTime = System.currentTimeMillis();
 		long totalTime = endTime - startTime;
 		System.out.println("\n" + totalTime + " milliseconds");
@@ -72,7 +72,7 @@ public class Main{
 				for(int i=0;i<expandedNodes.length;i++) {
 					Node newNode = expandedNodes[i];
 					if(newNode!=null) {
-						count+=1;
+						countOfExtendedNodes += 1;
 						nodes.add(newNode);
 						try {
 							newNode.setHeuristicCost(((EndGameState)(expandedNodes[i].getState())).getCoordinates().split(";")[2].length());
@@ -111,7 +111,7 @@ public class Main{
 				for(int i=0;i<expandedNodes.length;i++) {
 					Node newNode = expandedNodes[i];
 					if(newNode!=null) {
-						count+=1;
+						countOfExtendedNodes+=1;
 						nodes.add(newNode);
 						try {
 							newNode.setHeuristicCost(((EndGameState)(expandedNodes[i].getState())).getCoordinates().split(";")[2].length() + (Endgame.thanosDamage*2));
@@ -147,7 +147,7 @@ public class Main{
 				for(int i=0;i<expandedNodes.length;i++) {
 					Node newNode = expandedNodes[i];
 					if(newNode!=null) {
-						count+=1;
+						countOfExtendedNodes+=1;
 						nodes.add(expandedNodes[i]);
 						try {
 							newNode.setHeuristicCost(((EndGameState)(expandedNodes[i].getState())).getCoordinates().split(";")[2].length()*3 + expandedNodes[i].getPathCost());
@@ -183,7 +183,7 @@ public class Main{
 				for(int i=0;i<expandedNodes.length;i++) {
 					Node newNode = expandedNodes[i];
 					if(newNode!=null) {
-						count+=1;
+						countOfExtendedNodes+=1;
 						nodes.add(newNode);
 						try {
 							newNode.setHeuristicCost(((EndGameState)(expandedNodes[i].getState())).getCoordinates().split(";")[2].length()*3 + (Endgame.thanosDamage*2) + expandedNodes[i].getPathCost());
@@ -223,7 +223,7 @@ public class Main{
 					Node childNode = expandedNodes[i];
 					if(childNode!=null) {
 						nodes.add(expandedNodes[i]);
-						count+=1;
+						countOfExtendedNodes+=1;
 					}
 				}	
 				problem.putinVisitedStates(node.getState());
@@ -259,7 +259,7 @@ public class Main{
 					Node childNode = expandedNodes[i];
 					if(childNode!=null) {
 						nodes.add(expandedNodes[i]);
-						count+=1;
+						countOfExtendedNodes+=1;
 					}
 				}	
 				problem.putinVisitedStates(node.getState());
@@ -292,7 +292,7 @@ public class Main{
 					Node childNode = expandedNodes[i];
 					if(childNode!=null) {
 						nodes.add(0, expandedNodes[i]);
-						count+=1;
+						countOfExtendedNodes+=1;
 					}
 				}	
 				problem.putinVisitedStates(node.getState());
@@ -303,6 +303,39 @@ public class Main{
 			}
 
 			//cont = false;
+		}
+
+		return null;
+
+	}
+	
+	public static Node ID2(Problem problem) {
+		boolean cont = true;
+		ArrayList<Node> nodes = new ArrayList<Node>();
+		Node initialNode = new Node(problem.getInitialState(), null, "", 0, 0);
+		nodes.add(initialNode);
+		int depthLimit = 0;
+		while(cont) {
+			Node node = nodes.remove(0);
+			if(problem.goalTest(node)) {
+				return node;
+			}
+			if(!problem.isVisited(node.getState())) {
+				Node[] expandedNodes = problem.expand(node, problem.getOperators());
+				for(int i=0;i<expandedNodes.length;i++) {
+					Node childNode = expandedNodes[i];
+					if(childNode!=null && childNode.getDepth() <= depthLimit) {
+						nodes.add(0, expandedNodes[i]);
+						countOfExtendedNodes+=1;
+					}
+				}	
+				problem.putinVisitedStates(node.getState());
+			}
+			if(nodes.size() == 0) {
+				problem.visitedStates.clear();
+				nodes.add(initialNode);
+				depthLimit += 1;	
+			}
 		}
 
 		return null;
@@ -326,7 +359,7 @@ public class Main{
 					Node childNode = expandedNodes[i];
 					if(childNode!=null && childNode.getDepth() <= depthLimit) {
 						nodes.add(0, expandedNodes[i]);
-						count+=1;
+						countOfExtendedNodes+=1;
 					}
 				}	
 				problem.putinVisitedStates(node.getState());
@@ -334,7 +367,7 @@ public class Main{
 			if(nodes.size() == 0) {
 				problem.visitedStates.clear();
 				nodes.add(initialNode);
-				depthLimit+=1;
+				depthLimit += 1;	
 			}
 		}
 
@@ -370,7 +403,7 @@ public class Main{
 
 			outputString = outputString.substring(1, outputString.length() - 1);
 			outputString+= ";" + nodef.getPathCost();
-			outputString+= ";" + count;
+			outputString+= ";" + countOfExtendedNodes;
 			//System.out.println(nodef.getPathCost());
 			//System.out.print(nodef.getDepth());
 
