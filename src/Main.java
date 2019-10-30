@@ -12,8 +12,8 @@ public class Main{
 	public static void main(String[] args) {
 		countOfExtendedNodes = 0;
 		long startTime = System.currentTimeMillis();
-		String gridString = "15,15;12,13;5,7;7,0,9,14,14,8,5,8,8,9,8,4;6,6,4,3,10,2,7,4,3,11";
-		solve(gridString, "ID2", true);
+		String gridString = "13,13;4,2;2,4;6,1,1,10,8,4,9,2,2,8,9,4;6,4,3,4,3,11,1,12,1,9";
+		solve(gridString, "ID", true);
 		long endTime = System.currentTimeMillis();
 		long totalTime = endTime - startTime;
 		System.out.println("\n" + totalTime + " milliseconds");
@@ -36,7 +36,7 @@ public class Main{
 		}
 		
 		else if(strategy.equals("ID")) {
-			node = ID(problem);
+			node = ID3(problem);
 		}
 
 		else if(strategy.equals("UC")) {
@@ -434,6 +434,36 @@ public class Main{
 				}	
 				problem.putinVisitedStates(node.getState());
 			}
+			
+		}
+
+		return null;
+
+	}
+	
+	public static Node ID3(Problem problem) {
+		boolean cont = true;
+		Stack<Node> nodes = new Stack<Node>();
+		Node initialNode = new Node(problem.getInitialState(), null, "", 0, 0);
+		nodes.push(initialNode);
+		int depthLimit = 0;
+		while(cont) {
+			//System.out.println(nodes.size());
+			Node node = nodes.pop();
+			if(problem.goalTest(node)) {
+				return node;
+			}
+			if(!problem.isVisited(node.getState())) {
+				Node[] expandedNodes = problem.expand(node, problem.getOperators());
+				for(int i=0;i<expandedNodes.length;i++) {
+					Node childNode = expandedNodes[i];
+					if(childNode!=null && childNode.getDepth() <= depthLimit) {
+						nodes.push(expandedNodes[i]);
+						countOfExtendedNodes+=1;
+					}
+				}	
+				problem.putinVisitedStates(node.getState());
+			}
 			if(nodes.size() == 0) {
 				problem.visitedStates.clear();
 				nodes.add(initialNode);
@@ -444,7 +474,6 @@ public class Main{
 		return null;
 
 	}
-
 
 
 
