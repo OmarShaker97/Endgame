@@ -402,7 +402,7 @@ public class Endgame extends Problem {
 					System.out.print("I" + " ");
 					found = true;
 				}
-				
+
 				if((i == thanosCoordinates[0] && j == thanosCoordinates[1]) && !found){
 					System.out.print("T" + " ");
 					found = true;
@@ -429,7 +429,7 @@ public class Endgame extends Problem {
 			System.out.println("");
 		}
 	}
-	
+
 	@Override
 	public boolean isVisited(Object state) {
 		EndGameState endgameState = (EndGameState) state;
@@ -438,7 +438,7 @@ public class Endgame extends Problem {
 		}
 		return false;
 	}
-	
+
 	@Override
 	public void putinVisitedStates(Object state) {
 		EndGameState endgameState = (EndGameState) state;
@@ -449,40 +449,63 @@ public class Endgame extends Problem {
 	public void calculatePathCost(Node node, int stepCost) {
 		node.setPathCost(node.parent.getPathCost()+stepCost);
 	}
-	
-	public void setAS1Heurstic(Node node) {
+
+	public Node setHeuristicFunction(Node node, String informedSearchAlgorithm) 
+	{
+		if(informedSearchAlgorithm.equalsIgnoreCase("AS1"))
+			node.setHeuristicCost(setAS1Heurstic(node));
+
+		else if(informedSearchAlgorithm.equalsIgnoreCase("AS2"))
+			node.setHeuristicCost(setAS2Heurstic(node));
+
+		else if(informedSearchAlgorithm.equalsIgnoreCase("GR1"))
+			node.setHeuristicCost(setGR1Heurstic(node));
+
+		else if(informedSearchAlgorithm.equalsIgnoreCase("GR2"))
+			node.setHeuristicCost(setGR2Heurstic(node));
+		
+		return node;
+
+	}
+
+	public int setAS1Heurstic(Node node) {
 		try {
-		node.setHeuristicCost(((EndGameState)(node.getState())).getCoordinates().split(";")[2].length()*3 + node.getPathCost());
+			node.setHeuristicCost(((EndGameState)(node.getState())).getCoordinates().split(";")[2].length()*3 + node.getPathCost());
 		}
 		catch(Exception E){
 			node.setHeuristicCost(0);
 		}
+
+		return node.getHeuristicCost();
 	}
-	
-	public void setAS2Heurstic(Node node) {
+
+	public int setAS2Heurstic(Node node) {
 		try {
 			node.setHeuristicCost(((EndGameState)(node.getState())).getCoordinates().split(";")[2].length()*3 + (Endgame.thanosDamage*2) + node.getPathCost());
 		}
 		catch(Exception E){
 			node.setHeuristicCost(Endgame.thanosDamage*2);
 		}
+		return node.getHeuristicCost();
 	}
-	
-	public void setGR1Heurstic(Node node) {
+
+	public int setGR1Heurstic(Node node) {
 		try {
 			node.setHeuristicCost(((EndGameState)(node.getState())).getCoordinates().split(";")[2].length());
 		}
 		catch(Exception E){
 			node.setHeuristicCost(0);
 		}
+		return node.getHeuristicCost();
 	}
-	
-	public void setGR2Heurstic(Node node) {
+
+	public int setGR2Heurstic(Node node) {
 		try {
 			node.setHeuristicCost(((EndGameState)(node.getState())).getCoordinates().split(";")[2].length() + (Endgame.thanosDamage*2));
 		}
 		catch(Exception E){
 			node.setHeuristicCost(Endgame.thanosDamage*2);
 		}
+		return node.getHeuristicCost();
 	}
 }

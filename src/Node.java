@@ -9,13 +9,15 @@ public class Node  {
 	int pathCost;
 	int stepCost;
 	int heuristicCost;
+	String informedSearchAlgorithm;
 
-	public Node(Object state, Node parent, Object operator, int depth, int stepCost, int heuristicCost) {
+	public Node(Object state, Node parent, Object operator, int depth, int stepCost, int heuristicCost, String informedSearchAlgorithm) {
 		this.state = state;
 		this.parent = parent;
 		this.operator = operator;
 		this.depth = depth;
 		this.heuristicCost = heuristicCost;
+		this.informedSearchAlgorithm = informedSearchAlgorithm;
 		this.stepCost = stepCost;
 		if(parent!=null)
 			this.pathCost = parent.getPathCost() + stepCost;
@@ -109,6 +111,14 @@ public class Node  {
 
 	public void setHeuristicCost(int heuristicCost) {
 		this.heuristicCost = heuristicCost;
+	}
+
+	public String getInformedSearchAlgorithm() {
+		return informedSearchAlgorithm;
+	}
+
+	public void setInformedSearchAlgorithm(String informedSearchAlgorithm) {
+		this.informedSearchAlgorithm = informedSearchAlgorithm;
 	}
 
 

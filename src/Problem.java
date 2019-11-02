@@ -22,6 +22,8 @@ public abstract class Problem {
 	public abstract void putinVisitedStates(Object state);
 
 	public abstract boolean isVisited(Object state);
+	
+	public abstract Node setHeuristicFunction(Node node, String informedSearchAlgorithm);
 
 	public Object[] getOperators() {
 		return operators;

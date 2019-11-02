@@ -12,8 +12,8 @@ public class Main{
 	public static void main(String[] args) {
 		countOfExtendedNodes = 0;
 		long startTime = System.currentTimeMillis();
-		String gridString = "13,13;4,2;2,4;6,1,1,10,8,4,9,2,2,8,9,4;6,4,3,4,3,11,1,12,1,9";
-		solve(gridString, "ID", true);
+		String gridString = "5,5;2,2;4,2;4,0,1,2,3,0,2,1,4,1,2,4;3,2,0,0,3,4,4,3,4,4";
+		solve(gridString, "AS2", false);
 		long endTime = System.currentTimeMillis();
 		long totalTime = endTime - startTime;
 		System.out.println("\n" + totalTime + " milliseconds");
@@ -81,12 +81,7 @@ public class Main{
 					if(newNode!=null) {
 						countOfExtendedNodes += 1;
 						nodes.add(newNode);
-						try {
-							newNode.setHeuristicCost(((EndGameState)(expandedNodes[i].getState())).getCoordinates().split(";")[2].length());
-						}
-						catch(Exception E){
-							newNode.setHeuristicCost(0);
-						}
+						newNode = problem.setHeuristicFunction(newNode, "GR1");
 					}
 				}
 			}
@@ -120,12 +115,7 @@ public class Main{
 					if(newNode!=null) {
 						countOfExtendedNodes+=1;
 						nodes.add(newNode);
-						try {
-							newNode.setHeuristicCost(((EndGameState)(expandedNodes[i].getState())).getCoordinates().split(";")[2].length() + (Endgame.thanosDamage*2));
-						}
-						catch(Exception E){
-							newNode.setHeuristicCost(Endgame.thanosDamage*2);
-						}
+						newNode = problem.setHeuristicFunction(newNode, "GR2");
 					}
 				}
 			}
@@ -156,12 +146,7 @@ public class Main{
 					if(newNode!=null) {
 						countOfExtendedNodes+=1;
 						nodes.add(expandedNodes[i]);
-						try {
-							newNode.setHeuristicCost(((EndGameState)(expandedNodes[i].getState())).getCoordinates().split(";")[2].length()*3 + expandedNodes[i].getPathCost());
-						}
-						catch(Exception E){
-							newNode.setHeuristicCost(0);
-						}
+						newNode = problem.setHeuristicFunction(newNode, "AS1");
 					}
 				}
 			}
@@ -192,12 +177,7 @@ public class Main{
 					if(newNode!=null) {
 						countOfExtendedNodes+=1;
 						nodes.add(newNode);
-						try {
-							newNode.setHeuristicCost(((EndGameState)(expandedNodes[i].getState())).getCoordinates().split(";")[2].length()*3 + (Endgame.thanosDamage*2) + expandedNodes[i].getPathCost());
-						}
-						catch(Exception E){
-							newNode.setHeuristicCost(Endgame.thanosDamage*2);
-						}
+						newNode = problem.setHeuristicFunction(newNode, "AS2");
 					}
 				}
 			}
@@ -479,6 +459,7 @@ public class Main{
 
 	public static String solve(String grid, String strategy, boolean visualize) {
 		String[] operators = {"up", "down", "left", "right", "collect", "kill", "snap"};
+		//String[] operators = {"collect", "snap","up", "down", "left", "right", "kill"};
 		String[] coordinates = grid.split(";");
 		String gridSizeString = coordinates[0];
 		String ironmanCoordinates = coordinates[1];
