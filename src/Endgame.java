@@ -470,7 +470,7 @@ public class Endgame extends Problem {
 	public void calculatePathCost(Node node, int stepCost) {
 		node.setPathCost(node.parent.getPathCost()+stepCost);
 	}
-	// sets heuristic function depending on the informed search algorithm
+	// sets heuristic function depending on the informed search algorithms
 	public Node setHeuristicFunction(Node node, String informedSearchAlgorithm) 
 	{
 		if(informedSearchAlgorithm.equalsIgnoreCase("AS1"))

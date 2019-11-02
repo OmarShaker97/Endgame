@@ -12,13 +12,13 @@ public class Main{
 	public static void main(String[] args) {
 		countOfExtendedNodes = 0;
 		long startTime = System.currentTimeMillis();
-		String gridString = "5,5;2,2;4,2;4,0,1,2,3,0,2,1,4,1,2,4;3,2,0,0,3,4,4,3,4,4";
-		solve(gridString, "AS2", false);
+		String gridString = "13,13;4,2;2,4;6,1,1,10,8,4,9,2,2,8,9,4;6,4,3,4,3,11,1,12,1,9";
+		solve(gridString, "ID", false);
 		long endTime = System.currentTimeMillis();
 		long totalTime = endTime - startTime;
 		System.out.println("\n" + totalTime + " milliseconds");
 	}
-	
+
 	// general search method
 	public static Node Search (Problem problem ,String strategy) {
 
@@ -31,11 +31,11 @@ public class Main{
 		else if(strategy.equals("DF")) {
 			node = DFS2(problem);
 		}
-		
+
 		else if(strategy.equals("ID2")) {
 			node = ID2(problem);
 		}
-		
+
 		else if(strategy.equals("ID")) {
 			node = ID3(problem);
 		}
@@ -64,7 +64,7 @@ public class Main{
 		return node;
 
 	}
-	
+
 	// GR1 is commented for explanation to ease for reading, the rest of the algorithms follow the same structure
 	public static Node GR1(Problem problem) {
 		boolean cont = true;
@@ -88,7 +88,7 @@ public class Main{
 				}
 			}
 			if(nodes.size() == 0) {
-				System.out.println("out of length");
+				System.out.println("There is no solution.");
 				cont = false;
 				break;
 			}
@@ -122,7 +122,7 @@ public class Main{
 				}
 			}
 			if(nodes.size() == 0) {
-				System.out.println("out of length");
+				System.out.println("There is no solution.");
 				cont = false;
 			}
 		}
@@ -153,7 +153,7 @@ public class Main{
 				}
 			}
 			if(nodes.size() == 0) {
-				System.out.println("out of length");
+				System.out.println("There is no solution.");
 				cont = false;
 			}
 		}
@@ -184,7 +184,7 @@ public class Main{
 				}
 			}
 			if(nodes.size() == 0) {
-				System.out.println("out of length");
+				System.out.println("There is no solution.");
 				cont = false;
 				break;
 			}
@@ -195,7 +195,7 @@ public class Main{
 		return null;
 
 	}
-	
+
 	public static Node BFS2(Problem problem) {
 		boolean cont = true;
 		Queue<Node> nodes = new LinkedList<Node>();
@@ -220,14 +220,14 @@ public class Main{
 
 
 			if(nodes.size() == 0) {
-				System.out.println("out of length");
+				System.out.println("There is no solution.");
 				cont = false;
 			}
 		}
 		return null;
 
-			//cont = false;
-		}
+		//cont = false;
+	}
 
 
 	public static Node BFS(Problem problem) {
@@ -254,7 +254,7 @@ public class Main{
 
 
 			if(nodes.size() == 0) {
-				System.out.println("out of length");
+				System.out.println("There is no solution.");
 				cont = false;
 			}
 
@@ -287,7 +287,7 @@ public class Main{
 				problem.putinVisitedStates(node.getState());
 			}
 			if(nodes.size() == 0) {
-				System.out.println("out of length");
+				System.out.println("There is no solution.");
 				cont = false;
 			}
 
@@ -297,7 +297,7 @@ public class Main{
 		return null;
 
 	}
-	
+
 	public static Node DFS2(Problem problem) {
 		boolean cont = true;
 		Stack<Node> nodes = new Stack<Node>();
@@ -320,7 +320,7 @@ public class Main{
 				problem.putinVisitedStates(node.getState());
 			}
 			if(nodes.size() == 0) {
-				System.out.println("out of length");
+				System.out.println("There is no solution.");
 				cont = false;
 			}
 
@@ -353,7 +353,7 @@ public class Main{
 				problem.putinVisitedStates(node.getState());
 			}
 			if(nodes.size() == 0) {
-				System.out.println("out of length");
+				System.out.println("There is no solution.");
 				cont = false;
 			}
 
@@ -363,7 +363,7 @@ public class Main{
 		return null;
 
 	}
-	
+
 	public static Node ID2(Problem problem) {
 		LinkedList<Node> nodes = new LinkedList<Node>();
 		Node initialNode = new Node(problem.getInitialState(), null, "", 0, 0);
@@ -416,13 +416,13 @@ public class Main{
 				}	
 				problem.putinVisitedStates(node.getState());
 			}
-			
+
 		}
 
 		return null;
 
 	}
-	
+
 	public static Node ID3(Problem problem) {
 		boolean cont = true;
 		Stack<Node> nodes = new Stack<Node>();
@@ -460,8 +460,16 @@ public class Main{
 
 	// break down the grid, and pass all the inputs to our problem
 	public static String solve(String grid, String strategy, boolean visualize) {
-		String[] operators = {"up", "down", "left", "right", "collect", "kill", "snap"};
-		//String[] operators = {"collect", "snap","up", "down", "left", "right", "kill"};
+		String[] operators;
+		if(strategy.equals("ID")) {
+			String[] operatorsArray = {"collect", "kill","up", "down", "left", "right", "snap"};
+			operators = operatorsArray;
+		}
+		else {
+			String[] operatorsArray = {"up", "down", "left", "right", "collect", "kill", "snap"};
+			operators = operatorsArray;
+		}
+		//String[] operators = {"collect", "snap","up","left" ,"down", "right", "kill"};
 		String[] coordinates = grid.split(";");
 		String gridSizeString = coordinates[0];
 		String ironmanCoordinates = coordinates[1];
