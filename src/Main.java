@@ -6,8 +6,8 @@ import java.util.Stack;
 
 public class Main{
 
-	static Endgame problem;
-	static int countOfExtendedNodes;
+	static Endgame problem; // our endgame problem
+	static int countOfExtendedNodes; // number of expanded nodes
 
 	public static void main(String[] args) {
 		countOfExtendedNodes = 0;
@@ -18,7 +18,8 @@ public class Main{
 		long totalTime = endTime - startTime;
 		System.out.println("\n" + totalTime + " milliseconds");
 	}
-
+	
+	// general search method
 	public static Node Search (Problem problem ,String strategy) {
 
 		Node node = null;
@@ -63,25 +64,26 @@ public class Main{
 		return node;
 
 	}
-
+	
+	// GR1 is commented for explanation to ease for reading, the rest of the algorithms follow the same structure
 	public static Node GR1(Problem problem) {
 		boolean cont = true;
 		PriorityQueue<Node> nodes = new PriorityQueue<Node>(new NodeComparatorGR1());
-		nodes.add(new Node(problem.getInitialState(), null, "", 0, 0));
+		nodes.add(new Node(problem.getInitialState(), null, "", 0, 0)); // add initial node
 		while(cont) {
-			Node node = nodes.remove();
+			Node node = nodes.remove(); // remove first node
 			if(problem.goalTest(node)) {
-				return node;
+				return node;		// goal test
 			}
-			if(!problem.isVisited(node.getState())) {
-				problem.putinVisitedStates(node.getState());
-				Node[] expandedNodes = problem.expand(node, problem.getOperators());
+			if(!problem.isVisited(node.getState())) { // check if node is visited
+				problem.putinVisitedStates(node.getState()); // if not put it in the visited states
+				Node[] expandedNodes = problem.expand(node, problem.getOperators()); // expand its children
 				for(int i=0;i<expandedNodes.length;i++) {
 					Node newNode = expandedNodes[i];
 					if(newNode!=null) {
-						countOfExtendedNodes += 1;
-						nodes.add(newNode);
-						newNode = problem.setHeuristicFunction(newNode, "GR1");
+						countOfExtendedNodes += 1; // increment the expanded nodes
+						nodes.add(newNode); // add our node
+						newNode = problem.setHeuristicFunction(newNode, "GR1"); // set heuristic function
 					}
 				}
 			}
@@ -456,7 +458,7 @@ public class Main{
 	}
 
 
-
+	// break down the grid, and pass all the inputs to our problem
 	public static String solve(String grid, String strategy, boolean visualize) {
 		String[] operators = {"up", "down", "left", "right", "collect", "kill", "snap"};
 		//String[] operators = {"collect", "snap","up", "down", "left", "right", "kill"};
