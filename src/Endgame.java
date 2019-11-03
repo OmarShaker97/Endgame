@@ -520,7 +520,7 @@ public class Endgame extends Problem {
 		}
 		return node.getHeuristicCost();
 	}
-	// stones damage
+	// number of stones	
 	public int setGR1Heurstic(Node node) {
 		try {
 			node.setHeuristicCost(((EndGameState)(node.getState())).getCoordinates().split(";")[2].length());

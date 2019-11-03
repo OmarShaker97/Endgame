@@ -11,7 +11,7 @@ public class Main{
 
 	public static void main(String[] args) {
 		countOfExtendedNodes = 0;
-		String strategy = "BF";
+		String strategy = "GR1";
 		long startTime = System.currentTimeMillis();
 		String gridString = "5,5;2,2;4,2;4,0,1,2,3,0,2,1,4,1,2,4;3,2,0,0,3,4,4,3,4,4";
 		solve(gridString, strategy, false);
@@ -42,7 +42,7 @@ public class Main{
 		return node;
 	}
 	
-	// break down the grid, and pass all the inputs to our problem
+	// intialize the problem and run the search on the goal node.
 		public static String solve(String grid, String strategy, boolean visualize) {
 			problem = new Endgame(grid);
 			((Endgame)problem).setOperatorsOrder(strategy);
@@ -98,8 +98,6 @@ public class Main{
 				cont = false;
 				break;
 			}
-
-			//cont = false;
 		}
 
 		return null;
@@ -229,8 +227,6 @@ public class Main{
 			}
 		}
 		return null;
-
-		//cont = false;
 	}
 
 
