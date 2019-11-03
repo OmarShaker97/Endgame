@@ -101,7 +101,6 @@ public class Main{
 		}
 
 		return null;
-
 	}
 
 	public static Node GR2(Problem problem) {
@@ -132,7 +131,6 @@ public class Main{
 		}
 
 		return null;
-
 	}
 
 	public static Node AS1(Problem problem) {
@@ -163,7 +161,6 @@ public class Main{
 		}
 
 		return null;
-
 	}
 
 	public static Node AS2(Problem problem) {
@@ -190,12 +187,9 @@ public class Main{
 			if(nodes.size() == 0) {
 				System.out.println("There is no solution.");
 				cont = false;
-				break;
 			}
 		}
-
 		return null;
-
 	}
 
 	public static Node BFS(Problem problem) {
@@ -288,7 +282,6 @@ public class Main{
 		}
 
 		return null;
-
 	}
 
 	public static Node ID(Problem problem) {
@@ -298,7 +291,6 @@ public class Main{
 		nodes.push(initialNode);
 		int depthLimit = 0;
 		while(cont) {
-			//System.out.println(nodes.size());
 			Node node = nodes.pop();
 			if(problem.goalTest(node)) {
 				return node;
@@ -322,7 +314,6 @@ public class Main{
 		}
 
 		return null;
-
 	}
 
 
