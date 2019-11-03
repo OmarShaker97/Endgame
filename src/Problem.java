@@ -4,10 +4,18 @@ public abstract class Problem {
 	Object[] operators;
 	Object initialState;
 	HashSet<String> visitedStates;
-
+	
+	public Problem(Object[] operators) {
+		visitedStates = new HashSet<>();
+	}
+	
 	public Problem(Object[] operators, Object initialState) {
 		this.operators = operators;
 		this.initialState = initialState;
+		visitedStates = new HashSet<>();
+	}
+	
+	public Problem() {
 		visitedStates = new HashSet<>();
 	}
 

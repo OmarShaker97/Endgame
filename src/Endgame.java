@@ -1,15 +1,32 @@
 import java.util.ArrayList;
 
 public class Endgame extends Problem {
-	static String ThanosCoordinates; // Thanos Coordinates
-	static String gridSize; // Grid size; m x n
-	int stepCost; // the cost for each step (used to calculate our pathcost)
+	public static String ThanosCoordinates; // Thanos Coordinates
+	public static String gridSize; // Grid size; m x n
+	private int stepCost; // the cost for each step (used to calculate our pathcost)
 	public static int thanosDamage; // damage caused by thanos (5 damage units)
-	//
-	public Endgame(Object[] operators, Object initialState) {
-		super(operators, initialState);
+
+	public Endgame(String grid, String strategy) {
+		super();
+		String[] coordinates = grid.split(";");
+		String gridSizeString = coordinates[0];
+		String ironmanCoordinates = coordinates[1];
+		String thanosCoordinates = coordinates[2];
+		String stonesCoordinates = coordinates[3];
+		String warriorsCoordinates = coordinates[4];
+		initialState = new EndGameState(ironmanCoordinates + ";" + warriorsCoordinates + ";" + stonesCoordinates);
+		ThanosCoordinates = thanosCoordinates;
+		gridSize = gridSizeString;
 		stepCost = 0;
 		thanosDamage = 5;
+		if(strategy.equals("ID")) {
+			String[] operatorsArray = {"collect", "kill","up", "down", "left", "right", "snap"};
+			operators = operatorsArray;
+		}
+		else {
+			String[] operatorsArray = {"up", "down", "left", "right", "collect", "kill", "snap"};
+			operators = operatorsArray;
+		}
 	}
 	//position: [y, x]
 	/* The transition function is responsible for taking Iron Man from a state to the next state */

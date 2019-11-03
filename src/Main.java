@@ -21,54 +21,30 @@ public class Main{
 
 	// general search method
 	public static Node Search (Problem problem ,String strategy) {
-
 		Node node = null;
-
 		if(strategy.equals("BF"))
-			node = BFS2(problem);
-
-
-		else if(strategy.equals("DF")) {
-			node = DFS2(problem);
-		}
-
-		else if(strategy.equals("ID2")) {
-			node = ID2(problem);
-		}
-
-		else if(strategy.equals("ID")) {
-			node = ID3(problem);
-		}
-
-		else if(strategy.equals("UC")) {
+			node = BFS(problem);
+		else if(strategy.equals("DF"))
+			node = DFS(problem);
+		else if(strategy.equals("ID")) 
+			node = ID(problem);
+		else if(strategy.equals("UC"))
 			node = UCS(problem);
-		}
-
-		else if(strategy.equals("GR1")) {
+		else if(strategy.equals("GR1")) 
 			node = GR1(problem);
-		}
-
-		else if(strategy.equals("GR2")) {
+		else if(strategy.equals("GR2")) 
 			node = GR2(problem);
-		}
-
-		else if(strategy.equals("AS1")) {
+		else if(strategy.equals("AS1")) 
 			node = AS1(problem);
-		}
-
-		else if(strategy.equals("AS2")) {
+		else if(strategy.equals("AS2")) 
 			node = AS2(problem);
-		}
-
-
 		return node;
-
 	}
 
 	// GR1 is commented for explanation to ease for reading, the rest of the algorithms follow the same structure
 	public static Node GR1(Problem problem) {
 		boolean cont = true;
-		PriorityQueue<Node> nodes = new PriorityQueue<Node>(new NodeComparatorGR1());
+		PriorityQueue<Node> nodes = new PriorityQueue<Node>(new NodeComparatorHeuristic());
 		nodes.add(new Node(problem.getInitialState(), null, "", 0, 0)); // add initial node
 		while(cont) {
 			Node node = nodes.remove(); // remove first node
@@ -102,7 +78,7 @@ public class Main{
 
 	public static Node GR2(Problem problem) {
 		boolean cont = true;
-		PriorityQueue<Node> nodes = new PriorityQueue<Node>(new NodeComparatorGR2());
+		PriorityQueue<Node> nodes = new PriorityQueue<Node>(new NodeComparatorHeuristic());
 		nodes.add(new Node(problem.getInitialState(), null, "", 0, 0));
 		while(cont) {
 			Node node = nodes.remove();
@@ -133,7 +109,7 @@ public class Main{
 
 	public static Node AS1(Problem problem) {
 		boolean cont = true;
-		PriorityQueue<Node> nodes = new PriorityQueue<Node>(new NodeComparatorAS1());
+		PriorityQueue<Node> nodes = new PriorityQueue<Node>(new NodeComparatorHeuristic());
 		nodes.add(new Node(problem.getInitialState(), null, "", 0, 0));
 		while(cont) {
 			Node node = nodes.remove();
@@ -164,7 +140,7 @@ public class Main{
 
 	public static Node AS2(Problem problem) {
 		boolean cont = true;
-		PriorityQueue<Node> nodes = new PriorityQueue<Node>(new NodeComparatorAS2());
+		PriorityQueue<Node> nodes = new PriorityQueue<Node>(new NodeComparatorHeuristic());
 		nodes.add(new Node(problem.getInitialState(), null, "", 0, 0));
 		while(cont) {
 			Node node = nodes.remove();
@@ -188,15 +164,13 @@ public class Main{
 				cont = false;
 				break;
 			}
-
-			//cont = false;
 		}
 
 		return null;
 
 	}
 
-	public static Node BFS2(Problem problem) {
+	public static Node BFS(Problem problem) {
 		boolean cont = true;
 		Queue<Node> nodes = new LinkedList<Node>();
 		nodes.add(new Node(problem.getInitialState(), null, "", 0, 0));
@@ -230,47 +204,11 @@ public class Main{
 	}
 
 
-	public static Node BFS(Problem problem) {
-		boolean cont = true;
-		ArrayList<Node> nodes = new ArrayList<Node>();
-		nodes.add(new Node(problem.getInitialState(), null, "", 0, 0));
-		while(cont) {
-			Node node = nodes.remove(0);
-			if(problem.goalTest(node)) {
-				return node;
-			}
-			if(!problem.isVisited(node.getState())) {
-				Node[] expandedNodes = problem.expand(node, problem.getOperators());
-				for(int i=0;i<expandedNodes.length;i++) {
-					Node childNode = expandedNodes[i];
-					if(childNode!=null) {
-						nodes.add(expandedNodes[i]);
-						countOfExtendedNodes+=1;
-					}
-				}	
-				problem.putinVisitedStates(node.getState());
-			}
-
-
-
-			if(nodes.size() == 0) {
-				System.out.println("There is no solution.");
-				cont = false;
-			}
-
-			//cont = false;
-		}
-
-		return null;
-
-	}
-
 	public static Node UCS(Problem problem) {
 		boolean cont = true;
 		PriorityQueue<Node> nodes = new PriorityQueue<Node>(new NodeComparator());
 		nodes.add(new Node(problem.getInitialState(), null, "", 0, 0));
 		while(cont) {
-			//System.out.println(nodes.size());
 			Node node = nodes.remove();
 			if(problem.goalTest(node)) {
 				return node;
@@ -290,20 +228,17 @@ public class Main{
 				System.out.println("There is no solution.");
 				cont = false;
 			}
-
-			//cont = false;
 		}
 
 		return null;
 
 	}
 
-	public static Node DFS2(Problem problem) {
+	public static Node DFS(Problem problem) {
 		boolean cont = true;
 		Stack<Node> nodes = new Stack<Node>();
 		nodes.push(new Node(problem.getInitialState(), null, "", 0, 0));
 		while(cont) {
-			//System.out.println(nodes.size());
 			Node node = nodes.pop();
 			if(problem.goalTest(node)) {
 				return node;
@@ -324,106 +259,13 @@ public class Main{
 				cont = false;
 			}
 
-			//cont = false;
 		}
 
 		return null;
-
-	}
-
-	public static Node DFS(Problem problem) {
-		boolean cont = true;
-		ArrayList<Node> nodes = new ArrayList<Node>();
-		nodes.add(new Node(problem.getInitialState(), null, "", 0, 0));
-		while(cont) {
-			//System.out.println(nodes.size());
-			Node node = nodes.remove(0);
-			if(problem.goalTest(node)) {
-				return node;
-			}
-			if(!problem.isVisited(node.getState())) {
-				Node[] expandedNodes = problem.expand(node, problem.getOperators());
-				for(int i=0;i<expandedNodes.length;i++) {
-					Node childNode = expandedNodes[i];
-					if(childNode!=null) {
-						nodes.add(0, expandedNodes[i]);
-						countOfExtendedNodes+=1;
-					}
-				}	
-				problem.putinVisitedStates(node.getState());
-			}
-			if(nodes.size() == 0) {
-				System.out.println("There is no solution.");
-				cont = false;
-			}
-
-			//cont = false;
-		}
-
-		return null;
-
-	}
-
-	public static Node ID2(Problem problem) {
-		LinkedList<Node> nodes = new LinkedList<Node>();
-		Node initialNode = new Node(problem.getInitialState(), null, "", 0, 0);
-		nodes.add(initialNode);
-		int depthLimit = 0;
-		while(true) {
-			Node node = nodes.removeFirst();
-			if(problem.goalTest(node)) {
-				return node;
-			}
-			if(!problem.isVisited(node.getState())) {
-				Node[] expandedNodes = problem.expand(node, problem.getOperators());
-				for(int i=0;i<expandedNodes.length;i++) {
-					Node childNode = expandedNodes[i];
-					if(childNode!=null && childNode.getDepth() <= depthLimit) {
-						nodes.addFirst(childNode);
-						countOfExtendedNodes+=1;
-					}
-				}	
-				problem.putinVisitedStates(node.getState());
-			}
-			if(nodes.size() == 0) {
-				problem.visitedStates.clear();
-				nodes.add(initialNode);
-				depthLimit += 1;	
-			}
-		}
 
 	}
 
 	public static Node ID(Problem problem) {
-		boolean cont = true;
-		ArrayList<Node> nodes = new ArrayList<Node>();
-		Node initialNode = new Node(problem.getInitialState(), null, "", 0, 0);
-		nodes.add(initialNode);
-		int depthLimit = 0;
-		while(cont) {
-			Node node = nodes.remove(0);
-			if(problem.goalTest(node)) {
-				return node;
-			}
-			if(!problem.isVisited(node.getState())) {
-				Node[] expandedNodes = problem.expand(node, problem.getOperators());
-				for(int i=0;i<expandedNodes.length;i++) {
-					Node childNode = expandedNodes[i];
-					if(childNode!=null && childNode.getDepth() <= depthLimit) {
-						nodes.add(0, expandedNodes[i]);
-						countOfExtendedNodes+=1;
-					}
-				}	
-				problem.putinVisitedStates(node.getState());
-			}
-
-		}
-
-		return null;
-
-	}
-
-	public static Node ID3(Problem problem) {
 		boolean cont = true;
 		Stack<Node> nodes = new Stack<Node>();
 		Node initialNode = new Node(problem.getInitialState(), null, "", 0, 0);
@@ -460,29 +302,18 @@ public class Main{
 
 	// break down the grid, and pass all the inputs to our problem
 	public static String solve(String grid, String strategy, boolean visualize) {
-		String[] operators;
-		if(strategy.equals("ID")) {
-			String[] operatorsArray = {"collect", "kill","up", "down", "left", "right", "snap"};
-			operators = operatorsArray;
-		}
-		else {
-			String[] operatorsArray = {"up", "down", "left", "right", "collect", "kill", "snap"};
-			operators = operatorsArray;
-		}
-		//String[] operators = {"collect", "snap","up","left" ,"down", "right", "kill"};
-		String[] coordinates = grid.split(";");
-		String gridSizeString = coordinates[0];
-		String ironmanCoordinates = coordinates[1];
-		String thanosCoordinates = coordinates[2];
-		String stonesCoordinates = coordinates[3];
-		String warriorsCoordinates = coordinates[4];
+//		if(strategy.equals("ID")) {
+//			String[] operatorsArray = {"collect", "kill","up", "down", "left", "right", "snap"};
+//			operators = operatorsArray;
+//		}
+//		else {
+//			String[] operatorsArray = {"up", "down", "left", "right", "collect", "kill", "snap"};
+//			operators = operatorsArray;
+//		}
+//		//String[] operators = {"collect", "snap","up","left" ,"down", "right", "kill"};
+//		
 		String outputString = "";
-		problem = new Endgame(operators, new EndGameState(
-				ironmanCoordinates + ";" + warriorsCoordinates + ";" + stonesCoordinates
-				)
-				);
-		Endgame.ThanosCoordinates = thanosCoordinates;
-		Endgame.gridSize = gridSizeString;
+		problem = new Endgame(grid, strategy);
 		Node nodef = Search(problem, strategy);
 		if(nodef!=null) {
 			ArrayList<Node> nodesFRomRoot = nodef.getPathFromRoot();
@@ -490,14 +321,10 @@ public class Main{
 			for(int i=0;i<nodesFRomRoot.size();i++) {
 				outputString += nodesFRomRoot.get(i).getOperator() + ",";
 			}
-
+			
 			outputString = outputString.substring(1, outputString.length() - 1);
 			outputString+= ";" + nodef.getPathCost();
 			outputString+= ";" + countOfExtendedNodes;
-			//System.out.println(nodef.getPathCost());
-			//System.out.print(nodef.getDepth());
-
-
 			System.out.println(outputString);
 
 			if(visualize) {
@@ -507,6 +334,7 @@ public class Main{
 		else {
 			outputString = "There is no solution.";
 		}
+		
 		return outputString;
 	}
 
