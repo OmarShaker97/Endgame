@@ -3,10 +3,11 @@ import java.util.ArrayList;
 public class Endgame extends Problem {
 	public static String ThanosCoordinates; // Thanos Coordinates
 	public static String gridSize; // Grid size; m x n
-	private int stepCost; // the cost for each step (used to calculate our pathcost)
+	private int stepCost; // the cost for each step (used to calculate our pathcost
+	private String operatorsOrder;
 	public static int thanosDamage; // damage caused by thanos (5 damage units)
 
-	public Endgame(String grid, String strategy) {
+	public Endgame(String grid) {
 		super();
 		String[] coordinates = grid.split(";");
 		String gridSizeString = coordinates[0];
@@ -19,14 +20,6 @@ public class Endgame extends Problem {
 		gridSize = gridSizeString;
 		stepCost = 0;
 		thanosDamage = 5;
-		if(strategy.equals("ID")) {
-			String[] operatorsArray = {"collect", "kill","up", "down", "left", "right", "snap"};
-			operators = operatorsArray;
-		}
-		else {
-			String[] operatorsArray = {"up", "down", "left", "right", "collect", "kill", "snap"};
-			operators = operatorsArray;
-		}
 	}
 	//position: [y, x]
 	/* The transition function is responsible for taking Iron Man from a state to the next state */
@@ -546,5 +539,16 @@ public class Endgame extends Problem {
 			node.setHeuristicCost(Endgame.thanosDamage*2);
 		}
 		return node.getHeuristicCost();
+	}
+	
+	public String getOperatorsOrder() {
+		return operatorsOrder;
+	}
+	public void setOperatorsOrder(String operatorsOrder) {
+		this.operatorsOrder = operatorsOrder;
+		if(operatorsOrder.equals("ID"))
+			operators = new String[]{"collect", "kill","up", "down", "left", "right", "snap"};
+		else
+			operators = new String[]{"up", "down", "left", "right", "collect", "kill", "snap"};
 	}
 }

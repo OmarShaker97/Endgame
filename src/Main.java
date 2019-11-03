@@ -5,22 +5,23 @@ import java.util.Queue;
 import java.util.Stack;
 
 public class Main{
-
-	static Endgame problem; // our endgame problem
+	
+	static Problem problem; // our endgame problem
 	static int countOfExtendedNodes; // number of expanded nodes
 
 	public static void main(String[] args) {
 		countOfExtendedNodes = 0;
+		String strategy = "BF";
 		long startTime = System.currentTimeMillis();
-		String gridString = "13,13;4,2;2,4;6,1,1,10,8,4,9,2,2,8,9,4;6,4,3,4,3,11,1,12,1,9";
-		solve(gridString, "ID", false);
+		String gridString = "5,5;2,2;4,2;4,0,1,2,3,0,2,1,4,1,2,4;3,2,0,0,3,4,4,3,4,4";
+		solve(gridString, strategy, false);
 		long endTime = System.currentTimeMillis();
 		long totalTime = endTime - startTime;
 		System.out.println("\n" + totalTime + " milliseconds");
 	}
 
 	// general search method
-	public static Node Search (Problem problem ,String strategy) {
+	public static Node search (Problem problem ,String strategy) {
 		Node node = null;
 		if(strategy.equals("BF"))
 			node = BFS(problem);
@@ -40,6 +41,35 @@ public class Main{
 			node = AS2(problem);
 		return node;
 	}
+	
+	// break down the grid, and pass all the inputs to our problem
+		public static String solve(String grid, String strategy, boolean visualize) {
+			problem = new Endgame(grid);
+			((Endgame)problem).setOperatorsOrder(strategy);
+			Node goalNode = search(problem, strategy);
+			return printResult(visualize, goalNode);
+		}
+		
+		public static String printResult(boolean visualize, Node goalNode) {
+			String outputString = "";
+			if(goalNode!=null) {
+				ArrayList<Node> nodesFRomRoot = goalNode.getPathFromRoot();
+				for(int i=0;i<nodesFRomRoot.size();i++)
+					outputString += nodesFRomRoot.get(i).getOperator() + ",";
+				outputString = outputString.substring(1, outputString.length() - 1);
+				outputString+= ";" + goalNode.getPathCost();
+				outputString+= ";" + countOfExtendedNodes;
+				System.out.println(outputString);
+				if(visualize) {
+					visualize(visualize, nodesFRomRoot);
+				}
+			}
+			else {
+				outputString = "There is no solution.";
+			}
+			
+			return outputString;
+		}
 
 	// GR1 is commented for explanation to ease for reading, the rest of the algorithms follow the same structure
 	public static Node GR1(Problem problem) {
@@ -49,7 +79,7 @@ public class Main{
 		while(cont) {
 			Node node = nodes.remove(); // remove first node
 			if(problem.goalTest(node)) {
-				return node;		// goal test
+				return node;// goal test
 			}
 			if(!problem.isVisited(node.getState())) { // check if node is visited
 				problem.putinVisitedStates(node.getState()); // if not put it in the visited states
@@ -300,48 +330,10 @@ public class Main{
 	}
 
 
-	// break down the grid, and pass all the inputs to our problem
-	public static String solve(String grid, String strategy, boolean visualize) {
-//		if(strategy.equals("ID")) {
-//			String[] operatorsArray = {"collect", "kill","up", "down", "left", "right", "snap"};
-//			operators = operatorsArray;
-//		}
-//		else {
-//			String[] operatorsArray = {"up", "down", "left", "right", "collect", "kill", "snap"};
-//			operators = operatorsArray;
-//		}
-//		//String[] operators = {"collect", "snap","up","left" ,"down", "right", "kill"};
-//		
-		String outputString = "";
-		problem = new Endgame(grid, strategy);
-		Node nodef = Search(problem, strategy);
-		if(nodef!=null) {
-			ArrayList<Node> nodesFRomRoot = nodef.getPathFromRoot();
-
-			for(int i=0;i<nodesFRomRoot.size();i++) {
-				outputString += nodesFRomRoot.get(i).getOperator() + ",";
-			}
-			
-			outputString = outputString.substring(1, outputString.length() - 1);
-			outputString+= ";" + nodef.getPathCost();
-			outputString+= ";" + countOfExtendedNodes;
-			System.out.println(outputString);
-
-			if(visualize) {
-				visualize(visualize, nodesFRomRoot);
-			}
-		}
-		else {
-			outputString = "There is no solution.";
-		}
-		
-		return outputString;
-	}
-
-	public static void visualize(boolean visualize, ArrayList<Node> nodesFRomRoot) {
+	public static void visualize(boolean visualize, ArrayList<Node> nodesFromRoot) {
 		if(visualize) {
-			for(int i=0;i<nodesFRomRoot.size();i++) {
-				problem.printGrid(nodesFRomRoot.get(i));
+			for(int i=0;i<nodesFromRoot.size();i++) {
+				((Endgame)problem).printGrid(nodesFromRoot.get(i));
 				System.out.println("----------------");
 			}
 		}
